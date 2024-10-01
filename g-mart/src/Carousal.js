@@ -1,5 +1,5 @@
 import './static/carousal.css'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Carousal = () => {
     let [currentIndex,setCurrentIndex] = useState(0);
@@ -23,6 +23,13 @@ const nextSlide = ()=>{
     setCurrentIndex((prevIndex)=>(prevIndex - 1 + links.length) % links.length);
   }
   
+  useEffect(()=>{
+    const sideInterval = setInterval(nextSlide,3000);
+
+    return ()=>{
+        clearInterval(sideInterval);
+    };
+  },[currentIndex]);
   return (
     <>
     {/* carousal images */}
