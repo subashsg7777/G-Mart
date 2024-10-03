@@ -6,6 +6,7 @@ import { faCartShopping ,faLocationArrow, faUser} from "@fortawesome/free-solid-
 const Navbar = () => {
   // location useStates
   let [gps,setGps] = useState({lattitude:null,longitude:null});
+    let [region,setRegion] = useState('');
     let [error,setError] = useState(null);
 
     useEffect(()=>{
@@ -14,11 +15,26 @@ const Navbar = () => {
         try{
           // retriving location 
           navigator.geolocation.getCurrentPosition((position)=>{
+            // getting the copy of coords
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
             setGps({lattitude:position.coords.latitude,longitude:position.coords.longitude});
+            // const API KEY 
+            const API_KEY = 'c46b13c2835d4062b107a95b2f7561a1';
+            // api url is
+            const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${API_KEY}`;
+
+            fetch(url).then(response => response.json()).then(data =>{
+              const regionData = data.results[0].formatted;
+              setRegion(regionData);
+            }).catch(error =>{
+              console.log('error while fetching '+error);
+            });
           },(error)=>{
             // display particular error 
             setError(error);
-          })
+            console.log(error)
+          });
         }
 
         catch{
@@ -26,7 +42,7 @@ const Navbar = () => {
           console.log("error while Getting the location !..");
         }
       }
-    });
+    },[]);
   return (
 
   <nav className="p-4"  style={{backgroundColor:'grey',position:'fixed',top:'25px',width:'100%'}}>
@@ -43,7 +59,7 @@ const Navbar = () => {
             placeholder="Search..."
             className="p-2 rounded-l-md border-none focus:outline-none w-[600px]"
           />
-          <button className="bg-blue-600 hover:bg-green-700 text-white p-2 rounded-r-md" onclick={()=>{alert('result not found')}}>
+          <button className="bg-blue-600 hover:bg-green-700 text-white p-2 rounded-r-md" onClick={()=>{alert('result not found')}}>
             Search
           
           </button>
@@ -55,7 +71,7 @@ const Navbar = () => {
 
         <button className='flex items-center  text-white'>
             <FontAwesomeIcon icon={faLocationArrow} className='mr-2' size='xl'/>
-            <p className='whitespace-nowrap pr-[80px]' style={{fontSize:'0.875rem'}}>Lat:{gps.lattitude}&Lon:{gps.longitude}</p>
+            <p className='whitespace-nowrap pr-[80px]' style={{fontSize:'0.875rem',maxWidth:'150px',whiteSpace:'nowrap',overflow:'hidden',textOverflow: 'ellipsis'}}>{region}</p>
         </button>
         
         {/* profile icon */}
