@@ -28,7 +28,8 @@ const Navbar = () => {
       }
     });
   return (
-  <nav className="bg-gray-200 p-4">
+
+  <nav className="p-4"  style={{backgroundColor:'grey',position:'fixed',top:'25px',width:'100%'}}>
   <div className="container flex items-center ">
     
     <div className=" flex items-center text-white text-2xl font-bold mr-[200px] ">
@@ -42,7 +43,7 @@ const Navbar = () => {
             placeholder="Search..."
             className="p-2 rounded-l-md border-none focus:outline-none w-[600px]"
           />
-          <button className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-r-md" onclick={()=>{alert('result not found')}}>
+          <button className="bg-blue-600 hover:bg-green-700 text-white p-2 rounded-r-md" onclick={()=>{alert('result not found')}}>
             Search
           
           </button>
