@@ -1,0 +1,47 @@
+.carousel-container {
+  position: relative;
+  width: 80%; /* Adjust as needed */
+  overflow: hidden;
+  margin: auto;
+}
+
+.carousel {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  scroll-behavior: smooth;
+}
+
+.carousel-card {
+  min-width: 100%; /* Each card takes full width of the container */
+  margin: 10px;
+  padding: 20px;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.carousel-button:first-of-type {
+  left: 10px;
+}
+
+.carousel-button:last-of-type {
+  right: 10px;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none; /* Hide default scrollbar */
+}
