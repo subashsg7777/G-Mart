@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react'
 import './static/output.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping ,faLocationArrow, faUser} from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   // location useStates
   let [gps,setGps] = useState({lattitude:null,longitude:null});
     let [error,setError] = useState(null);
+
+    // initialize the navigation hook
+    const navigate = useNavigate();
 
     useEffect(()=>{
       // checking if the browser supports geolocation 
@@ -27,6 +31,7 @@ const Navbar = () => {
         }
       }
     });
+
   return (
 
   <nav className="p-4"  style={{backgroundColor:'grey',position:'fixed',top:'25px',width:'100%',zIndex:50}}>
@@ -59,7 +64,7 @@ const Navbar = () => {
         </button>
         
         {/* profile icon */}
-        <button className='flex items-center ml-[100px]'>
+        <button className='flex items-center ml-[100px]' onClick={(e)=>{e.preventDefault();navigate('/signin')}}>
             <FontAwesomeIcon icon={faUser} className='mr-2' size='xl'/>
         </button>
   </div>
