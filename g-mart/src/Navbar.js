@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import './static/output.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping ,faLocationArrow, faUser} from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping ,faLocationArrow, faUser,faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
+import { IoLogOut } from "react-icons/io5";
 
 const Navbar = () => {
   // location useStates
@@ -75,8 +76,13 @@ const Navbar = () => {
         </button>
         
         {/* profile icon */}
-        <button className='flex items-center ml-[100px]'>
+        <button className='flex items-center ml-[50px]'>
             <FontAwesomeIcon icon={faUser} className='mr-2' size='xl'/>
+        </button>
+
+        {/* Log out Icon */}
+        <button className='flex items-center ml-[100px]'>
+        <FontAwesomeIcon icon={faRightFromBracket} size='xl' />
         </button>
   </div>
 </nav>
