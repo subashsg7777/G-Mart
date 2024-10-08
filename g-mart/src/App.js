@@ -12,6 +12,7 @@ import Psi from './Psi'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import offer from './Offer';
 import Add from './Add';
+import Results from './Results';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path='/login' element={<Psi />}/>
         <Route path='/signin' element={<Ps />}/>
         <Route path='/add' element={<Add />}/>
+        <Route path="/search/:searchterm" element={<Results />} />
       </Routes>
     </Router>
 

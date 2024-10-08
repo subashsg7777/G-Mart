@@ -80,7 +80,7 @@ app.use('/api/google-login',async (req,res)=>{
 });
 
 // route to add product 
-app.use('/api/products',async (req,res)=>{
+app.post('/api/products',async (req,res)=>{
     const {name,price,description,url} = req.body;
 
     try{
@@ -101,7 +101,40 @@ app.use('/api/products',async (req,res)=>{
     catch(error){
         console.log('error while saving product to database !..');
     }
-})
+});
+
+// route to search products in the database 
+
+// Search products by name
+app.get('/api/product/search', async (req, res) => {
+    const { name } = req.query;
+    
+    try {
+      // Search for products with a name that matches the query (case-insensitive)
+      const products = await Product.find({ name: { $regex: name, $options: 'i' } });
+      
+    //   if (products.length > 0) {
+    //     res.json(products);
+    //   } else {
+    //     res.status(404).json({ error: 'No products found' });
+    //   }
+    // } catch (error) {
+    //   res.status(500).json({ error: 'Server error' });
+    // }
+    const resultsArray = Array.isArray(products) ? products : [products];
+    if (resultsArray.length > 0) {
+      console.log('the returned product is : '+resultsArray);
+      res.json(Array.isArray(products) ? products : [products]);
+  }
+    else{
+      res.status(404).json({error:'No Products Found'});
+    }
+  }
+    catch(error){
+      res.status(500).json({error:'Server Error'})
+    }
+  });
+
 // Start the server
 app.listen(5000, () => {
     console.log("Server is running on port 5000!");

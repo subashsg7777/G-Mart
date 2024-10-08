@@ -8,6 +8,7 @@ const Navbar = () => {
   // location useStates
   let [gps,setGps] = useState({lattitude:null,longitude:null});
     let [error,setError] = useState(null);
+    let [searchterm,setSearchterm] = useState('');
 
     // initialize the navigation hook
     const navigate = useNavigate();
@@ -32,6 +33,12 @@ const Navbar = () => {
       }
     });
 
+    // handling the redirection 
+    const handleRedirect = ()=>{
+      if(searchterm.trim()){
+        navigate(`/search/${searchterm}`);
+      }
+    }
   return (
 
   <nav className="p-4"  style={{backgroundColor:'grey',position:'fixed',top:'25px',width:'100%',zIndex:50}}>
@@ -47,8 +54,9 @@ const Navbar = () => {
             type="text"
             placeholder="Search..."
             className="p-2 rounded-l-md border-none focus:outline-none w-[600px]"
+            onChange={(e)=>{setSearchterm(e.target.value)}}
           />
-          <button className="bg-blue-600 hover:bg-green-700 text-white p-2 rounded-r-md" onclick={()=>{alert('result not found')}}>
+          <button className="bg-blue-600 hover:bg-green-700 text-white p-2 rounded-r-md" onClick={handleRedirect}>
             Search
           
           </button>
