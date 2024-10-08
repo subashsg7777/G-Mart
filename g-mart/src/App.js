@@ -11,6 +11,7 @@ import Ps from './Ps'
 import Psi from './Psi'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import offer from './Offer';
+import Add from './Add';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path='/' element={<><Offer /> <Navbar /> <Card /> <Carousal /> <Images /> <InfiniteCarousel /> <Footer /></>}/>
         <Route path='/login' element={<Psi />}/>
         <Route path='/signin' element={<Ps />}/>
+        <Route path='/add' element={<Add />}/>
       </Routes>
     </Router>
 

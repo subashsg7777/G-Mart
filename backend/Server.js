@@ -4,6 +4,7 @@ const cors = require('cors');
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const User = require('./models/Users'); // Import the User model
+const Product = require('./models/Product'); //module for Product Data 
 
 const app = express();
 
@@ -77,6 +78,30 @@ app.use('/api/google-login',async (req,res)=>{
         console.log('error while routing '+error);
     }
 });
+
+// route to add product 
+app.use('/api/products',async (req,res)=>{
+    const {name,price,description,url} = req.body;
+
+    try{
+        const newproduct = new Product({
+            name,
+            price,
+            description,
+            url
+        });
+    
+        // saving the data into the database
+        const savestatus = await newproduct.save();
+    
+        // returning the status details to frontend
+        return res.status(201).json(savestatus);
+    }
+
+    catch(error){
+        console.log('error while saving product to database !..');
+    }
+})
 // Start the server
 app.listen(5000, () => {
     console.log("Server is running on port 5000!");
