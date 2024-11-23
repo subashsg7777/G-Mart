@@ -2,17 +2,19 @@
     border: 1px solid #ccc;
     padding: 16px;
     margin: 16px;
-    text-align: center;
+    max-width:157px;
   }
   
   .product-card img {
-    max-width: 100%;
+    width:150px;
     height: auto;
   }
   
   .search-results {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
   }
   
+  .product-card:hover{
+    background:#E2E2E4;
+  }

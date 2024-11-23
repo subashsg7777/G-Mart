@@ -5,7 +5,12 @@ module.exports = {
     "./public/index.html",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'custom-pink': '#FFB6C1', // Replace with your desired hex codes
+        'custom-purple': '#D8BFD8',
+      },
+    },
   },
   plugins: [],
 }

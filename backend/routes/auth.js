@@ -2,6 +2,8 @@ const express = require('express');
 const User = require('../models/Users');
 const router = express.Router();
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const JWT_SECRET = 'your_jwt_secret_key';
 
 router.post('/signup', async (req, res) => {
     console.log('AUth file is Running !..');
@@ -18,7 +20,9 @@ router.post('/signup', async (req, res) => {
     user = new User({ Username, Email, Password });
     await user.save();
 
-    res.status(201).json({ success: true, message: 'User registered successfully' });
+    const token = jwt.sign({id:user._id,email:user.Email},JWT_SECRET,{expiresIn:'1d'});
+
+    res.status(201).json({ success: true, message: 'User registered successfully',token });
   } catch (error) {
     console.error("Error during signup:", error.message);
     res.status(500).json({ success: false, message: 'Server error' });
@@ -49,9 +53,29 @@ router.post('/login',async (req,res)=>{
 
         else{
             console.log('Log IN Succesfull !...');
-            return res.json({success:true,message:'LOG IN Sucessfull !...'});
+
+            const token = jwt.sign({id:user._id,email:user.Email},JWT_SECRET,{expiresIn:'1d'});
+
+            return res.json({success:true,message:'LOG IN Sucessfull !...',token});
         }
     }
 });
+
+// Middleware to authenticate users
+const authenticate = (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+
+  if (!token) {
+    return res.status(401).json({ message: 'Access denied. No token provided.' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, 'your_jwt_secret'); // Replace 'your_jwt_secret' with your secret
+    req.user = decoded; // Attach user information to request
+    next();
+  } catch (error) {
+    res.status(400).json({ message: 'Invalid token.' });
+  }
+};
 
 module.exports = router;

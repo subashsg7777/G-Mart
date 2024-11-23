@@ -13,6 +13,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import offer from './Offer';
 import Add from './Add';
 import Results from './Results';
+import SignUp from './SignUp';
+import AddProduct from './AddProduct';
+import Login from './Login';
 
 
 function App() {
@@ -21,10 +24,10 @@ function App() {
     <Router>
       <Routes>
         <Route path='/' element={<><Offer /> <Navbar /> <Card /> <Carousal /> <Images /> <InfiniteCarousel /> <Footer /></>}/>
-        <Route path='/login' element={<Psi />}/>
-        <Route path='/signin' element={<Ps />}/>
-        <Route path='/add' element={<Add />}/>
-        <Route path="/search/:searchterm" element={<Results />} />
+        <Route path='/login' element={<Login />}/>
+        <Route path='/signin' element={<SignUp />}/>
+        <Route path='/add' element={<> <AddProduct /></>}/>
+        <Route path="/search/:searchterm" element={<><Offer /> <Navbar /> <Results /></>} />
       </Routes>
     </Router>
 

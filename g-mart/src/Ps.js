@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
 
 const CLIENT_ID = '493022169817-7ofv109mrudioksamgsql5invmf0pjlp.apps.googleusercontent.com';
 
@@ -9,6 +10,8 @@ const Ps = () => {
     const [Email,setEmail] = useState('');
     const [Password,setPassword] = useState('');
     const [message,setMessage] = useState('');
+    // initialize the navigation hook
+    const navigate = useNavigate();
 
         const handleSuccess = (credentialResponse) => {
           console.log("Token from Google:", credentialResponse.credential);
@@ -84,6 +87,7 @@ const Ps = () => {
 
             if(data.success){
                 alert('Sign In Sucessfully');
+                navigate('/');
             }
 
             else{

@@ -229,6 +229,253 @@ b,
 strong {
   font-weight: bolder;
 }
+/* In App.css or a custom CSS file */
+.gradient-background {
+  background-image: url('bg.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .add-background {
+  background-image: url('cart.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+.add-background{
+  background-image:url('cart.png');
+  background-size:cover;
+  background-position:center;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.transparent-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.6); /* 60% transparent white */
+  border-radius: 1.5rem; /* Rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  backdrop-filter: blur(10px); /* Blur effect for frosted glass */
+  
+}
+
+.rounded {
+  border-radius: 0.25rem /* 4px */;
+}
+
+.trans-card{
+  width:100%;
+  max-width:600px;
+  background-color:rgba(255,255,255,0.6);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border-radius : 1.5rem;
+  padding:2rem;
+  backdrop-filter:blur(10px);
+}
+
+.mr-2 {
+  padding-right: 0.5rem /* 8px */;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity)) /* #ef4444 */;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Pre:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap');
+
+.raleway-font {
+  font-family: 'Raleway', sans-serif;
+}
+
+
+.ml-4 {
+  margin-left: 2rem /* 8px */;
+}
+
+.ml-9 {
+  margin-left: 2.25rem /* 20px */;
+}
+
+.ml-3 {
+  margin-left: 0.75rem /* 12px */;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.ml-2 {
+  margin-left: 0.5rem /* 8px */;
+}
+
+.ml-10 {
+  margin-left: 2.5rem /* 40px */;
+}
+
+.ml-4 {
+  margin-left: 1rem /* 16px */;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.rounded-xl {
+  border-radius: 0.75rem /* 12px */;
+}
+
+.mt-2 {
+  margin-top: 0.5rem /* 8px */;
+}
+
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity)) /* #ffffff */;
+}
+s
+.pb-2 {
+  padding-bottom: 0.5rem /* 8px */;
+}
+
+.h-28 {
+  height: 7rem /* 24px */;
+}
+
+.p-2 {
+  padding: 0.5rem /* 8px */;
+}
+
+.rounded-2xl {
+  border-radius: 1rem /* 16px */;
+}
+
+.w-fit {
+  width: fit-content;
+}
+
+.p-4 {
+  padding: 1rem /* 16px */;
+}
+
+.pt-2 {
+  padding-top: 0.5rem /* 8px */;
+}
+
+.w-28 {
+  width: 7rem /* 112px */;
+}
+
+.ml-10 {
+  margin-left: 2.90rem /* 36px */;
+}
+
+.ml-8 {
+  margin-left: 2rem /* 32px */;
+}
+
+.text-2xl {
+  font-size: 1.5rem /* 24px */;
+  line-height: 2rem /* 32px */;
+}
+
+.text-blue-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity)) /* #3b82f6 */;
+}
+
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity)) /* #4b5563 */;
+}
+
+.max-h-3 {
+  max-height: 0.75rem /* 12px */;
+}
+
+.mt-1 {
+  margin-top: 0.25rem /* 4px */;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
+.pt-12 {
+  padding-top: 3rem /* 48px */;
+}
+
+.pt-13{
+  padding-top:3.25rem;
+}
+
+.pt-16 {
+  padding-top: 4rem /* 64px */;
+}
+
+.block {
+  display: block;
+}
+
+.pt-32 {
+  padding-top: 8rem /* 80px */;
+}
+
+.mt-4 {
+  margin-top: 1rem /* 16px */;
+}
+
+.pt-8 {
+  padding-top: 2rem /* 32px */;
+}
+
+.pt-4{
+  padding-top:1rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.new-font{
+  font-family: "Edu AU VIC WA NT Pre", cursive;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
 
 /*
 1. Use the user's configured `mono` font-family by default.

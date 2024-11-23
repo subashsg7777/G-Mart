@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './static/output.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping ,faLocationArrow, faUser} from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping ,faLocationArrow, faUser,faCirclePlus,faStar} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
@@ -74,6 +74,9 @@ const Navbar = () => {
         {/* profile icon */}
         <button className='flex items-center ml-[100px]' onClick={(e)=>{e.preventDefault();navigate('/signin')}}>
             <FontAwesomeIcon icon={faUser} className='mr-2' size='xl'/>
+        </button>
+        <button className='flex items-center ml-8' onClick={(e)=>{e.preventDefault();navigate('/add')}}>
+        <FontAwesomeIcon icon={faCirclePlus} />
         </button>
   </div>
 </nav>
