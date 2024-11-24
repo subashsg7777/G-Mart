@@ -164,6 +164,7 @@ const User = require('./models/Users');
 const Product = require('./models/Product');
 const authRoutes = require('./routes/auth');
 const { addToCart } = require('./models/Cart');
+const {Cart} = require('./models/Cart');
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -257,12 +258,22 @@ app.get('/api/product/search', async (req, res) => {
 
 // creating a cart result show engine 
 app.get('/api/cart', async (req,res)=>{
+    console.log("Routing Sucessfull !..");
     try{
+        const result = await Cart.find();
+        console.log(result);
+        if(result.length > 0){
+            return res.status(200).json(result);
+        }
 
+        else{
+            console.log("No Cart Items found")
+            return res.status(200).json("Error !..");
+        }
     }
 
-    catch {
-    
+    catch(error){
+        console.log(error);
     }
 });
 // Add to Cart

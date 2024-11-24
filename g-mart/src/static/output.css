@@ -350,6 +350,40 @@ strong {
   border-radius: 0.75rem /* 12px */;
 }
 
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity)) /* #dc2626 */;
+}
+
+.mt-1 {
+  margin-top: 0.25rem /* 4px */;
+}
+
+.mt-3 {
+  margin-top: 0.75rem /* 12px */;
+}
+
+.m-4 {
+  margin: 1rem /* 16px */;
+}
+
+.m-3 {
+  margin: 0.75rem /* 12px */;
+}
+
+.pb-3 {
+  padding-bottom: 0.75rem /* 12px */;
+}
+
+.text-2xl {
+  font-size: 1.5rem /* 30px */;
+  line-height: 2rem /* 36px */;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
 .mt-2 {
   margin-top: 0.5rem /* 8px */;
 }
@@ -358,7 +392,7 @@ strong {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity)) /* #ffffff */;
 }
-s
+
 .pb-2 {
   padding-bottom: 0.5rem /* 8px */;
 }

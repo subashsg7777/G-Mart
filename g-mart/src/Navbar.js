@@ -62,7 +62,7 @@ const Navbar = () => {
           </button>
         </div>
         {/* cart icon  */}
-        <button className="flex items-center ml-[100px] ">
+        <button className="flex items-center ml-[100px] " onClick={(e)=>{e.preventDefault();navigate('/showcart')}}>
           <FontAwesomeIcon icon={faCartShopping} className="mr-2" size='xl'/>
         </button>
 

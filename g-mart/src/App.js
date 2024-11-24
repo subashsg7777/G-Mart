@@ -16,6 +16,7 @@ import Results from './Results';
 import SignUp from './SignUp';
 import AddProduct from './AddProduct';
 import Login from './Login';
+import CartResults from './CartResults';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path='/signin' element={<SignUp />}/>
         <Route path='/add' element={<> <AddProduct /></>}/>
         <Route path="/search/:searchterm" element={<><Offer /> <Navbar /> <Results /></>} />
+        <Route path="/showcart" element={<><Offer /> <Navbar /> <CartResults /></>} />
       </Routes>
     </Router>
 
