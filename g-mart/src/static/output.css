@@ -371,6 +371,14 @@ strong {
   margin: 0.75rem /* 12px */;
 }
 
+.pl-2 {
+  padding-left: 0.5rem /* 8px */;
+}
+
+.p-3 {
+  padding: 0.75rem /* 12px */;
+}
+
 .pb-3 {
   padding-bottom: 0.75rem /* 12px */;
 }

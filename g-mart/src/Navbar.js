@@ -75,10 +75,11 @@ const Navbar = () => {
         <button className='flex items-center ml-[100px]' onClick={(e)=>{e.preventDefault();navigate('/signin')}}>
             <FontAwesomeIcon icon={faUser} className='mr-2' size='xl'/>
         </button>
+
         <button className='flex items-center ml-8' onClick={(e)=>{e.preventDefault();navigate('/add')}}>
         <FontAwesomeIcon icon={faCirclePlus} />
         </button>
-  </div>
+  </div> 
 </nav>
 
   )

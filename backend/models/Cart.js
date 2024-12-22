@@ -71,6 +71,10 @@ const cartSchema = mongoose.Schema({
     url: {
         type: String,
         required: true
+    },
+    stars:{
+        type:Number,
+        required:false
     }
 });
 
@@ -78,7 +82,7 @@ const Cart = mongoose.model('Cart', cartSchema);
 
 // Logic to save data to the database
 const addToCart = async (req, res) => {
-    const { usertoken, name, price, description, url } = req.body;
+    const { usertoken, name, price, description, url,stars } = req.body;
     console.log('The received value in Cart is', name);
     try {
         const cartItem = new Cart({
@@ -87,6 +91,7 @@ const addToCart = async (req, res) => {
             price,
             description,
             url,
+            stars
         });
         await cartItem.save();
         res.status(201).json({ message: 'Product added to cart successfully!' });

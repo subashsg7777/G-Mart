@@ -2,10 +2,43 @@ import React, { useState, useEffect } from 'react';
 import './static/output.css'
 import './CartResults.css'
 import { FaStar } from 'react-icons/fa';
+import { AiFillStar,AiOutlineStar } from 'react-icons/ai';
 
 const CartResults = () => {
   const [Cart, setCartResults] = useState([]); // Initialize state for Cart
 
+// Function to render stars
+const renderStars = (stars) => {
+  const maxStars = 5;
+  if(stars > 0){
+    const filledStars = Array(stars).fill(<AiFillStar className="text-yellow-500" style={{display:'inline'}}/>);
+  const emptyStars = Array(maxStars - stars).fill(<AiOutlineStar className="text-gray-400" style={{display:'inline'}}/>);
+  return [...filledStars, ...emptyStars];
+  }
+
+  else if (stars == 0){
+    const emptyStars = Array(5).fill(<AiOutlineStar className="text-gray-400" style={{display:'inline'}}/>);
+  return [...emptyStars];
+  }
+};
+
+// function to handle cart itmes deletion 
+const handledeletion = async (name)=>{
+
+  const response = await fetch('http://localhost:5000/api/cartdelete',{
+    method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({name:name}),
+  });
+  if(response.ok){
+    alert('Item Sucessfully removed from Cart !..');
+  }
+
+  else{
+    alert('Error While Deleting Item From Cart !..');
+  }
+};
+     
   // Function to fetch cart results
   const resultEngine = async () => {
     try {
@@ -47,15 +80,11 @@ const CartResults = () => {
             <button className='text-white p-2 new-font rounded-2xl mt-3' style={{backgroundColor:'black',width:'150px'}}>Buy Now !..</button>
             </div>
             <div className='inline-block'>
-              <button className='text-white p-2 new-font rounded-2xl mt-3 ml-3' style={{backgroundColor:'black',width:'200px'}}>Remove From Cart</button>
+              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'black',width:'180px',display:'flex',alignContent:'center',padding:'8px 12px'}} onClick={(e)=>{e.preventDefault();handledeletion(product.name);}}>Remove From Cart</button>
             </div>
             </div>
             <div className='mt-3' style={{display:'inline-block'}}>
-            <FaStar className='star' style={{display:'inline'}}/>
-            <FaStar className='star' style={{display:'inline-block'}}/>
-            <FaStar className='star' style={{display:'inline-block'}}/>
-            <FaStar className='star' style={{display:'inline-block'}}/>
-            <FaStar className='star' style={{display:'inline-block'}}/>
+            {renderStars(product.stars)}
             </div>
             
           </div>

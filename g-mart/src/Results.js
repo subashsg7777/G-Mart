@@ -4,6 +4,8 @@ import './results.css'
 import { faCartShopping ,faLocationArrow, faUser,faCirclePlus,faStar} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaStar } from 'react-icons/fa';
+import {AiFillStar,AiOutlineStar} from 'react-icons/ai';
+
 const Results = () => {
 
     // necessary use states 
@@ -26,7 +28,8 @@ const Results = () => {
           name:product.name,
           price:product.price,
           description:product.description,
-          url:product.url
+          url:product.url,
+          stars:0
         })
       });
 
@@ -40,11 +43,27 @@ const Results = () => {
       }
     }
 
-    useEffect(()=>{
+// Function to render stars
+const renderStars = (stars) => {
+  const maxStars = 5;
+  if(stars > 0){
+    const filledStars = Array(stars).fill(<AiFillStar className="text-yellow-500" style={{display:'inline'}}/>);
+  const emptyStars = Array(maxStars - stars).fill(<AiOutlineStar className="text-gray-400" style={{display:'inline'}}/>);
+  return [...filledStars, ...emptyStars];
+  }
 
-      
+  else if (stars == 0){
+    const emptyStars = Array(5).fill(<AiOutlineStar className="text-gray-400" style={{display:'inline'}}/>);
+  return [...emptyStars];
+  }
+};
+     
+
+    useEffect(()=>{
+ 
         // funnction to handle the search eevents 
     const handleSearch = async (e)=>{
+
         // creating the fetch request 
         try{
           const response = await fetch(`http://localhost:5000/api/product/search?name=${searchterm}`);
@@ -72,6 +91,7 @@ const Results = () => {
       handleSearch();
     },[searchterm   ])
   return (
+    <>
     <div>
       <h1 className='new-font pt-32 font-bold text-2xl'>Search Results for "{searchterm}"  :</h1>
         <div className="search-results pt-4">
@@ -81,9 +101,9 @@ const Results = () => {
                 <img src={product.url} alt={product.name} />
                 <h1 className='text-2xl text-red-500' style={{marginTop:'0.25rem'}}>{product.name}</h1>
                 {/* <p><FontAwesomeIcon icon={faStar} /></p> */}
-                
-                <FaStar className='star'/>
-                
+                <div className='flex items-center mt-2'>
+                  {renderStars(product.stars)}
+                </div>
                 <p className='text-gray-600 mt-1'>Price: <p className='text-blue-500 inline mt-1 font-extrabold'>${product.price}</p></p>
                 <p className='text-gray-600 line-clamp-2 mt-1'>{product.description}</p>
                 <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'black',color:'white'}} onClick={()=> addtoCart(product)}>Add to cart</button>
@@ -98,6 +118,7 @@ const Results = () => {
         </div>
       
     </div>
+    </>
   )
 }
 

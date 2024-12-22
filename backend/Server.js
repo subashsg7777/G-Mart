@@ -276,6 +276,27 @@ app.get('/api/cart', async (req,res)=>{
         console.log(error);
     }
 });
+
+app.delete('/api/cartdelete',async (req,res)=>{
+    const {name} = req.body;
+
+    try{
+        const response  = await Cart.findOneAndDelete({name});
+
+        if(response){
+            console.log('Cart Deleted !...');
+            return res.status(200).json({ok:'Cart Item Deleted Sucessfully !..'});
+        }
+        else{
+            console.log('Error while Deleting Cart Item in Server !..');
+            return res.status(500).json({error:'Error while Deleting Cart Item in Server !..'});
+        }
+    }
+
+    catch(error){
+        console.log('Server Try Error : ',error);
+    }
+});
 // Add to Cart
 app.post('/api/addcart',authRoutes,addToCart);
 
