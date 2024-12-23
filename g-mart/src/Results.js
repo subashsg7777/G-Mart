@@ -11,9 +11,9 @@ const Results = () => {
   const navigate = useNavigate();
   // function to send product id to rating page 
 
-  // const handlePassing= (product_Id) =>{
-  //   navigate(`/rate-page/${product_Id}`);
-  // }
+  const handlePassing= (product_Id) =>{
+    navigate(`/rate-page/${product_Id}`);
+  }
 
   const handleDetails = (product_Id) =>{
     navigate(`/details/${product_Id}`);
@@ -111,7 +111,7 @@ const renderStars = (stars,count) => {
             searchResults.map(product => (
               <div key={product._id} className="product-card pt-12">
                 <img src={product.url} alt={product.name} />
-                <h1 className='text-2xl text-red-500' style={{marginTop:'0.25rem'}}>{product.name}</h1>
+                <h1 className='text-2xl text-red-500' style={{marginTop:'0.25rem'}} onClick={(e)=>{e.preventDefault();handleDetails(product._id)}}>{product.name}</h1>
                 {/* <p><FontAwesomeIcon icon={faStar} /></p> */}
                 <div className='flex items-center mt-2'>
                   {renderStars(product.stars,product.count)}
