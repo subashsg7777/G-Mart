@@ -17,6 +17,7 @@ import SignUp from './SignUp';
 import AddProduct from './AddProduct';
 import Login from './Login';
 import CartResults from './CartResults';
+import Starrate from './Starrate';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path='/add' element={<> <AddProduct /></>}/>
         <Route path="/search/:searchterm" element={<><Offer /> <Navbar /> <Results /></>} />
         <Route path="/showcart" element={<><Offer /> <Navbar /> <CartResults /></>} />
+        <Route path='/rate-page/:product_Id' element={<><Starrate /></>} />
       </Routes>
     </Router>
 

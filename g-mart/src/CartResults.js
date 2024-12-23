@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {useNavigate} from 'react-router-dom';
 import './static/output.css'
 import './CartResults.css'
 import { FaStar } from 'react-icons/fa';
@@ -6,7 +7,13 @@ import { AiFillStar,AiOutlineStar } from 'react-icons/ai';
 
 const CartResults = () => {
   const [Cart, setCartResults] = useState([]); // Initialize state for Cart
+  const navigate = useNavigate();
 
+  // function to send product id to rating page 
+
+  const handlePassing= (product_Id) =>{
+    navigate(`/rate-page/${product_Id}`);
+  }
 // Function to render stars
 const renderStars = (stars) => {
   const maxStars = 5;
@@ -82,6 +89,9 @@ const handledeletion = async (name)=>{
             <div className='inline-block'>
               <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'black',width:'180px',display:'flex',alignContent:'center',padding:'8px 12px'}} onClick={(e)=>{e.preventDefault();handledeletion(product.name);}}>Remove From Cart</button>
             </div>
+            {/* <div className='inline-block'>li
+              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'black',width:'180px',display:'flex',alignContent:'center',padding:'8px 12px'}} onClick={(e)=>{e.preventDefault();handlePassing(product._id);}}>Rate This Product</button>
+            </div> */}
             </div>
             <div className='mt-3' style={{display:'inline-block'}}>
             {renderStars(product.stars)}

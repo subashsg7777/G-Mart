@@ -21,6 +21,11 @@ const productSchema = new mongoose.Schema({
     stars:{
         type:Number,
         required:false
+    },
+
+    count:{
+        type:Number,
+        required:false
     }
 });
 

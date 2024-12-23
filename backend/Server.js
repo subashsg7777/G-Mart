@@ -300,6 +300,35 @@ app.delete('/api/cartdelete',async (req,res)=>{
 // Add to Cart
 app.post('/api/addcart',authRoutes,addToCart);
 
+// Star rating feature 
+app.post('/rate-product/:productId', async (req,res)=>{
+    const {stars}= req.body;
+    const {productId} = req.params;
+
+    try{
+        const search = await Product.findById(productId);
+
+        if (!search){
+            return res.status(400).json({message:"No product found"});
+        }
+
+        search.stars += stars;
+        search.count += 1;
+
+        // saving the databse
+        await search.save();
+
+        const avgstars = search.stars / search.count;
+        console.log("AVG Stars : ",avgstars);
+        return res.status(200).json({message:"Your Rating are SAved !.."});
+    }
+
+    catch{
+        console.log("Error while Accessing database !..");
+        return res.status(400).json({message:'Error while accessing database !...'});
+    }
+})
+
 // modified built-in server signup functionality 
 app.post('/api/auth/signup', async (req, res) => {
   console.log('AUth file is Running !..');

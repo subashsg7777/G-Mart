@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './results.css'
 import { faCartShopping ,faLocationArrow, faUser,faCirclePlus,faStar} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +7,17 @@ import { FaStar } from 'react-icons/fa';
 import {AiFillStar,AiOutlineStar} from 'react-icons/ai';
 
 const Results = () => {
+
+  const navigate = useNavigate();
+  // function to send product id to rating page 
+
+  // const handlePassing= (product_Id) =>{
+  //   navigate(`/rate-page/${product_Id}`);
+  // }
+
+  const handleDetails = (product_Id) =>{
+    navigate(`/details/${product_Id}`);
+  }
 
     // necessary use states 
     const [searchResults,setSearchResults] =useState([]);
@@ -44,15 +55,16 @@ const Results = () => {
     }
 
 // Function to render stars
-const renderStars = (stars) => {
+const renderStars = (stars,count) => {
+  const avg = Math.floor(stars /count);
   const maxStars = 5;
-  if(stars > 0){
-    const filledStars = Array(stars).fill(<AiFillStar className="text-yellow-500" style={{display:'inline'}}/>);
-  const emptyStars = Array(maxStars - stars).fill(<AiOutlineStar className="text-gray-400" style={{display:'inline'}}/>);
+  if(avg > 0){
+    const filledStars = Array(avg).fill(<AiFillStar className="text-yellow-500" style={{display:'inline'}}/>);
+  const emptyStars = Array(maxStars - avg).fill(<AiOutlineStar className="text-gray-400" style={{display:'inline'}}/>);
   return [...filledStars, ...emptyStars];
   }
 
-  else if (stars == 0){
+  else if (avg == 0){
     const emptyStars = Array(5).fill(<AiOutlineStar className="text-gray-400" style={{display:'inline'}}/>);
   return [...emptyStars];
   }
@@ -102,13 +114,15 @@ const renderStars = (stars) => {
                 <h1 className='text-2xl text-red-500' style={{marginTop:'0.25rem'}}>{product.name}</h1>
                 {/* <p><FontAwesomeIcon icon={faStar} /></p> */}
                 <div className='flex items-center mt-2'>
-                  {renderStars(product.stars)}
+                  {renderStars(product.stars,product.count)}
                 </div>
                 <p className='text-gray-600 mt-1'>Price: <p className='text-blue-500 inline mt-1 font-extrabold'>${product.price}</p></p>
                 <p className='text-gray-600 line-clamp-2 mt-1'>{product.description}</p>
                 <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'black',color:'white'}} onClick={()=> addtoCart(product)}>Add to cart</button>
                 <br />
                 <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'black',color:'white'}}>Buy Now</button>
+                <br />
+                <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'black',color:'white'}} onClick={(e)=>{e.preventDefault();handlePassing(product._id)}}>Rate this product</button>
               </div>
             ))
             
