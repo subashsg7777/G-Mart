@@ -33,7 +33,7 @@ function App() {
         <Route path="/search/:searchterm" element={<><Offer /> <Navbar /> <Results /></>} />
         <Route path="/showcart" element={<><Offer /> <Navbar /> <CartResults /></>} />
         <Route path='/rate-page/:product_Id' element={<><Starrate /></>} />
-        <Route path='/detail/:product_Id' element={<><Details /></>}/>
+        <Route path='/details/:product_Id' element={<><Details /></>}/>
       </Routes>
     </Router>
 

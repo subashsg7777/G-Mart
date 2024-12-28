@@ -173,8 +173,18 @@ app.post('/rate-product/:productId', async (req,res)=>{
 });
 
 // detail retrival from database
-app.get('/details',async (req,res) =>{
-    
+app.post('/details',async (req,res) =>{
+    console.log('Getting product Details')
+    const {productId} = req.body;
+
+    const search = await Product.findOne(productId);
+
+    if(!search){
+        return res.status(404).json({message:'The Product is not Found !..'});
+    }
+    console.log("Data derieved : ",search);
+
+    return res.status(200).json({data:search});
 });
 
 // modified built-in server signup functionality 

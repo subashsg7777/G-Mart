@@ -409,6 +409,10 @@ strong {
   height: 7rem /* 24px */;
 }
 
+.h-full{
+  height:60%;
+}
+
 .p-2 {
   padding: 0.5rem /* 8px */;
 }
