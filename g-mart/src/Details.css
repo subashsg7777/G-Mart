@@ -1,0 +1,16 @@
+#image{
+    margin:10px auto;
+    height:600px;
+}
+
+.detail-container{
+    background-color:#E5E5E6;
+}
+
+.cbutton{
+    backgroundColor:'black';
+    width:'260px';
+    display:'flex';
+    alignContent:'center';
+    padding:'8px 12px';
+}
