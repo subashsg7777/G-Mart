@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams , useNavigate} from 'react-router-dom'
 import {AiFillStar,AiOutlineStar} from 'react-icons/ai';
 import { FaTruck, FaMoneyBill, FaShieldAlt, faArrow, FaArrowsAlt} from 'react-icons/fa';
 import './Details.css'
@@ -7,6 +7,43 @@ import './Details.css'
 const Details = () => {
     const {product_Id} = useParams();
     const [data, setData] = useState(null);
+    const navigate = useNavigate();
+
+    const handlePassing= (product_Id) =>{
+      navigate(`/rate-page/${product_Id}`);
+    }
+  
+
+    // function to handle add cart event to database 
+    const addtoCart = async (product)=>{
+      const userdata = localStorage.getItem('token')
+      const username = userdata;
+      console.log('User Token derrived data is : ',username);
+      const response = await fetch('http://localhost:5000/api/addcart',{
+        method:'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization : `Bearer  ${localStorage.getItem('token')}`,
+        },
+        body:JSON.stringify({
+          usertoken:userdata,
+          name:product.name,
+          price:product.price,
+          description:product.description,
+          url:product.url,
+          stars:0
+        })
+      });
+
+      if (response.ok){
+        const data = await response.json();
+        alert(data.message);
+      }
+
+      else{
+        alert('Error:While trying to connect to Server')
+      }
+    }
 
     // Function to render stars
     const renderStars = (stars,count) => {
@@ -58,8 +95,7 @@ const Details = () => {
               <div className='flex items-center mt-2 flex justify-center mb-4' style={{fontSize:'25px'}}>
                   {renderStars(data.stars,data.count)}
                 </div>
-              <p className='new-font'>{data.description}</p>
-              <p className='mb-8 new-font'>Lorem ipsum dolor sit amet consectetur.
+              <p className='mb-8 new-font' style={{width:'800px',margin:'50px auto'}}>{data.description},Lorem ipsum dolor sit amet consectetur.
                 Expedita quasi aspernatur velit commodi repellendus?
                 Voluptas voluptatibus numquam et nam ratione.Lorem ipsum dolor sit amet consectetur.
                 Expedita quasi aspernatur velit commodi repellendus?
@@ -87,8 +123,8 @@ const Details = () => {
                 </div>
                 </div>
               <button className='text-white p-2 new-font rounded-2xl mt-3' style={{backgroundColor:'black',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}}>Buy Now !..</button>
-              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'black',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} >Remove From Cart</button>
-              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'black',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} >Rate This Product</button>
+              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'black',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();addtoCart(data);}}>Add to Cart</button>
+              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'black',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();handlePassing(data._id)}}>Rate This Product</button>
           </div>
             
             
