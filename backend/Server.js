@@ -175,9 +175,10 @@ app.post('/rate-product/:productId', async (req,res)=>{
 // detail retrival from database
 app.post('/details',async (req,res) =>{
     console.log('Getting product Details')
-    const {productId} = req.body;
+    const {product_Id} = req.body;
+    console.log("Product ID from server : ",product_Id);
 
-    const search = await Product.findOne(productId);
+    const search = await Product.findOne({_id:product_Id});
 
     if(!search){
         return res.status(404).json({message:'The Product is not Found !..'});

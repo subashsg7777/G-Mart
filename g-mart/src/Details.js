@@ -63,10 +63,11 @@ const Details = () => {
 
     useEffect(() => {
         const handleDataRetrival =  async() =>{
+          console.log('Product Id : ',product_Id);
             const response = await fetch('http://localhost:5000/details',{
                 method:'POST',
                 headers:{'content-type':'application/json'},
-                body:JSON.stringify({product_Id:product_Id})
+                body:JSON.stringify({product_Id:product_Id}),
             });
             
             if (response.ok){
