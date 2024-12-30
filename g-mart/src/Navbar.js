@@ -6,20 +6,52 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   // location useStates
-  let [gps,setGps] = useState({lattitude:null,longitude:null});
+  let [gps,setGps] = useState('');
     let [error,setError] = useState(null);
     let [searchterm,setSearchterm] = useState('');
 
     // initialize the navigation hook
     const navigate = useNavigate();
 
+    // function to convert co-ordinates into cities
+    const fetchNearestCity = async (latitude, longitude) => {
+      const apiKey = 'c46b13c2835d4062b107a95b2f7561a1'; // Replace with your OpenCage API key
+      const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`;
+    
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Failed to fetch city information');
+        }
+    
+        const data = await response.json();
+        const city = data.results[0]?.components?.city || 
+                     data.results[0]?.components?.town || 
+                     data.results[0]?.components?.village;
+    
+        if (city) {
+          console.log(`Nearest City: ${city}`);
+          return city;
+        } else {
+          console.error('City not found in the response');
+          return null;
+        }
+      } catch (error) {
+        console.error('Error fetching city:', error);
+        return null;
+      }
+    };
+
     useEffect(()=>{
+
+      
       // checking if the browser supports geolocation 
       if(navigator.geolocation){
         try{
           // retriving location 
-          navigator.geolocation.getCurrentPosition((position)=>{
-            setGps({lattitude:position.coords.latitude,longitude:position.coords.longitude});
+          navigator.geolocation.getCurrentPosition(async (position)=>{
+            const city = await fetchNearestCity(position.coords.latitude,position.coords.longitude);
+            setGps(city);
           },(error)=>{
             // display particular error 
             setError(error);
@@ -68,7 +100,7 @@ const Navbar = () => {
 
         <button className='flex items-center  text-white'>
             <FontAwesomeIcon icon={faLocationArrow} className='mr-2' size='xl'/>
-            <p className='whitespace-nowrap pr-[80px]' style={{fontSize:'0.875rem'}}>Lat:{gps.lattitude}&Lon:{gps.longitude}</p>
+            <p className='whitespace-nowrap pr-[80px]' style={{fontSize:'0.875rem'}}>Location : {gps}</p>
         </button>
         
         {/* profile icon */}

@@ -122,7 +122,7 @@ const renderStars = (stars,count) => {
                 <br />
                 <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'black',color:'white'}}>Buy Now</button>
                 <br />
-                <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'black',color:'white'}} onClick={(e)=>{e.preventDefault();handlePassing(product._id)}}>Rate this product</button>
+                {/* <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'black',color:'white'}} onClick={(e)=>{e.preventDefault();handlePassing(product._id)}}>Rate this product</button> */}
               </div>
             ))
             
