@@ -1,10 +1,17 @@
 // Card.js
 import React from 'react';
+import {useNavigate} from 'react-router-dom';
 
 const Cardstyles = ({ image, text }) => {
+
+    const navigate = useNavigate();
+    // function to forward to cat.js
+    const handlePassing = (cat)=>{
+        navigate(`/catagory/${cat}`);
+    };
     return (
         <div style={styles.cardContainer}>
-            <img src={image} alt={text} style={styles.imageStyle} />
+            <img src={image} alt={text} style={styles.imageStyle} onClick={(e)=> {e.preventDefault();handlePassing(text)}}/>
             <p style={styles.textStyle}>{text}</p>
         </div>
     );

@@ -70,10 +70,11 @@ app.post('/api/google-login', async (req, res) => {
 
 // Add Product
 app.post('/api/products', async (req, res) => {
-    const { name, price, description, url } = req.body;
-
+    const { name, price, description, url,z,selectedCategory } = req.body;
+    const cat = selectedCategory;
+    const stars = z;
     try {
-        const newProduct = new Product({ name, price, description, url });
+        const newProduct = new Product({ name, price, description, url ,stars ,cat});
         const saveStatus = await newProduct.save();
         return res.status(201).json(saveStatus);
     } catch (error) {
@@ -187,6 +188,20 @@ app.post('/details',async (req,res) =>{
 
     return res.status(200).json({data:search});
 });
+
+// server-side for cat findation 
+app.post('/catagory',async (req,res)=>{
+    const {cat} = req.body;
+
+    const search = await Product.find({cat:cat});
+
+    if(!search){
+        console.log("The particualar Catagory has no items !..");
+        return res.status(404).json({message:'The particualar Catagory has no items !..'});
+    }
+    console.log("Catagory Data : ",search);
+    return res.status(200).json({ok: true,data:search});
+})
 
 // modified built-in server signup functionality 
 app.post('/api/auth/signup', async (req, res) => {

@@ -101,7 +101,7 @@ const renderStars = (stars,count) => {
       }
 
       handleSearch();
-    },[searchterm   ])
+    },[searchterm])
   return (
     <>
     <div>

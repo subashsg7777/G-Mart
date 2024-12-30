@@ -32,7 +32,7 @@ const Card = () => {
     <>
     <div style={styles.container}>
             {links.map((item, index) => (
-                <Cardstyles key={index} image={item.image} text={item.text} />
+                <Cardstyles key={index} image={item.image} text={item.text}/>
             ))}
         </div>
     </>

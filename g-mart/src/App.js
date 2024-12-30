@@ -19,6 +19,7 @@ import Login from './Login';
 import CartResults from './CartResults';
 import Starrate from './Starrate';
 import Details from './Details';
+import Cat from './Cat';
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/showcart" element={<><Offer /> <Navbar /> <CartResults /></>} />
         <Route path='/rate-page/:product_Id' element={<><Starrate /></>} />
         <Route path='/details/:product_Id' element={<><Details /></>}/>
+        <Route path='/catagory/:cat' element={<><Offer /> <Navbar /> <Cat /></>} />
       </Routes>
     </Router>
 

@@ -7,9 +7,17 @@ const AddProduct = () => {
     const [price,setPrice]= useState(0);
     const [description,setDescription] = useState('');
     const [url,setUrl] = useState('');
+    const [selectedCategory,setselectedCategory] = useState('');
+    const z =0;
     // initialize the navigation hook
     const navigate = useNavigate();
 
+    const handleChange = (event) => {
+        const category = event.target.value;
+        
+        setselectedCategory(category);
+      };
+    
     const handleEntry = async (e)=>{
         e.preventDefault();
 
@@ -17,7 +25,7 @@ const AddProduct = () => {
             const response = await fetch('http://localhost:5000/api/products',{
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
-                body:JSON.stringify({name,price,description,url})
+                body:JSON.stringify({name,price,description,url,z,selectedCategory})
             });
     
             const data = await response.json();
@@ -55,6 +63,23 @@ const AddProduct = () => {
             <br />
             <br />
             <button className='new-font p-4 rounded-2xl' style={{backgroundColor:'rgba(80,80,80,0.6)',marginLeft:'70%',backdropFilter:'blur(10px)'}} onClick={handleEntry}>Add Product !..</button>
+            <select
+        id="categoryDropdown"
+        value={selectedCategory}
+        onChange={handleChange}
+        className="border rounded-lg p-2 w-full"
+      >
+        <option value="" disabled>
+          Choose a category
+        </option>
+        <option value="Monitors">Monitors</option>
+        <option value="Laptops">Laptops</option>
+        <option value="Mobile Phones">Mobile Phones</option>
+        <option value="Clothings">Clothings</option>
+        <option value="Accessories">Accessories</option>
+        <option value="Sports">Sports</option>
+        <option value="Shoes">Shoes</option>
+      </select>
         </div>
     </div>
     </>

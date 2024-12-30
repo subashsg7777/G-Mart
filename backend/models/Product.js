@@ -20,12 +20,17 @@ const productSchema = new mongoose.Schema({
 
     stars:{
         type:Number,
-        required:false
+        required:true
     },
 
     count:{
         type:Number,
         required:false
+    },
+
+    cat:{
+        type:String,
+        required:true
     }
 });
 
