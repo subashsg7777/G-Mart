@@ -72,9 +72,9 @@ app.post('/api/google-login', async (req, res) => {
 app.post('/api/products', async (req, res) => {
     const { name, price, description, url,z,selectedCategory } = req.body;
     const cat = selectedCategory;
-    const stars = z;
+    const stars = z,count = 0;
     try {
-        const newProduct = new Product({ name, price, description, url ,stars ,cat});
+        const newProduct = new Product({ name, price, description, url ,stars , count ,cat});
         const saveStatus = await newProduct.save();
         return res.status(201).json(saveStatus);
     } catch (error) {
