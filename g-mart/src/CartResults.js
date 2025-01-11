@@ -84,10 +84,10 @@ const handledeletion = async (name)=>{
             <h3 className='money font-extrabold mt-3'>{product.price}</h3>
             <p className='desc new-font mt-2'>{product.description}</p>
             <div className='inline'>
-            <button className='text-white p-2 new-font rounded-2xl mt-3' style={{backgroundColor:'black',width:'150px'}}>Buy Now !..</button>
+            <button className='text-white p-2 new-font rounded-2xl mt-3' style={{backgroundColor:'#1A4CA6',width:'150px'}}>Buy Now !..</button>
             </div>
             <div className='inline-block'>
-              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'black',width:'180px',display:'flex',alignContent:'center',padding:'8px 12px'}} onClick={(e)=>{e.preventDefault();handledeletion(product.name);}}>Remove From Cart</button>
+              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'180px',display:'flex',alignContent:'center',padding:'8px 12px'}} onClick={(e)=>{e.preventDefault();handledeletion(product.name);}}>Remove From Cart</button>
             </div>
             {/* <div className='inline-block'>li
               <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'black',width:'180px',display:'flex',alignContent:'center',padding:'8px 12px'}} onClick={(e)=>{e.preventDefault();handlePassing(product._id);}}>Rate This Product</button>

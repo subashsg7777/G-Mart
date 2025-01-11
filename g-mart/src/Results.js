@@ -57,6 +57,7 @@ const Results = () => {
 // Function to render stars
 const renderStars = (stars,count) => {
   const avg = Math.floor(stars /count);
+  console.log('Search result stars and count',stars,count);
   const maxStars = 5;
   if(avg > 0){
     const filledStars = Array(avg).fill(<AiFillStar className="text-yellow-500" style={{display:'inline'}}/>);
@@ -64,7 +65,7 @@ const renderStars = (stars,count) => {
   return [...filledStars, ...emptyStars];
   }
 
-  else if (avg == 0){
+  else if (stars === 0){
     const emptyStars = Array(5).fill(<AiOutlineStar className="text-gray-400" style={{display:'inline'}}/>);
   return [...emptyStars];
   }
@@ -111,18 +112,18 @@ const renderStars = (stars,count) => {
             searchResults.map(product => (
               <div key={product._id} className="product-card pt-12">
                 <img src={product.url} alt={product.name} />
-                <h1 className='text-2xl text-red-500' style={{marginTop:'0.25rem'}} onClick={(e)=>{e.preventDefault();handleDetails(product._id)}}>{product.name}</h1>
+                <h1 className='text-2xl text-black font-bold new-font' style={{marginTop:'0.25rem'}} onClick={(e)=>{e.preventDefault();handleDetails(product._id)}}>{product.name}</h1>
                 {/* <p><FontAwesomeIcon icon={faStar} /></p> */}
                 <div className='flex items-center mt-2'>
                   {renderStars(product.stars,product.count)}
                 </div>
                 <p className='text-gray-600 mt-1'>Price: <p className='text-blue-500 inline mt-1 font-extrabold'>${product.price}</p></p>
                 <p className='text-gray-600 line-clamp-2 mt-1'>{product.description}</p>
-                <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'black',color:'white'}} onClick={()=> addtoCart(product)}>Add to cart</button>
+                <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'#1A4CA6',color:'white'}} onClick={()=> addtoCart(product)}>Add to cart</button>
                 <br />
-                <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'black',color:'white'}}>Buy Now</button>
+                <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'#1A4CA6',color:'white'}}>Buy Now</button>
                 <br />
-                {/* <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'black',color:'white'}} onClick={(e)=>{e.preventDefault();handlePassing(product._id)}}>Rate this product</button> */}
+                {/* <button className='rounded-xl new-font w-full mt-2' style={{backgroundColor:'#1A4CA6',color:'white'}} onClick={(e)=>{e.preventDefault();handlePassing(product._id)}}>Rate this product</button> */}
               </div>
             ))
             

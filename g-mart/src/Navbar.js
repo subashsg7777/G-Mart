@@ -73,7 +73,7 @@ const Navbar = () => {
     }
   return (
 
-  <nav className="p-4"  style={{backgroundColor:'grey',position:'fixed',top:'25px',width:'100%',zIndex:50}}>
+  <nav className="p-4"  style={{backgroundColor:'#1A4CA6',position:'fixed',top:'25px',width:'100%',zIndex:50}}>
   <div className="container flex items-center ">
     
     <div className=" flex items-center text-white text-2xl font-bold mr-[200px] ">
@@ -95,21 +95,21 @@ const Navbar = () => {
         </div>
         {/* cart icon  */}
         <button className="flex items-center ml-[100px] " onClick={(e)=>{e.preventDefault();navigate('/showcart')}}>
-          <FontAwesomeIcon icon={faCartShopping} className="mr-2" size='xl'/>
+          <FontAwesomeIcon icon={faCartShopping} className="mr-2 text-white" size='xl'/>
         </button>
 
         <button className='flex items-center  text-white'>
-            <FontAwesomeIcon icon={faLocationArrow} className='mr-2' size='xl'/>
-            <p className='whitespace-nowrap pr-[80px]' style={{fontSize:'0.875rem'}}>Location : {gps}</p>
+            <FontAwesomeIcon icon={faLocationArrow} className='mr-2 ' size='xl'/>
+            <p className='whitespace-nowrap pr-[80px] text-white' style={{fontSize:'0.875rem'}}>Location : {gps}</p>
         </button>
         
         {/* profile icon */}
-        <button className='flex items-center ml-[100px]' onClick={(e)=>{e.preventDefault();navigate('/signin')}}>
-            <FontAwesomeIcon icon={faUser} className='mr-2' size='xl'/>
+        <button className='flex items-center ml-[100px] ' onClick={(e)=>{e.preventDefault();navigate('/signin')}}>
+            <FontAwesomeIcon icon={faUser} className='mr-2 text-white' size='xl'/>
         </button>
 
         <button className='flex items-center ml-8' onClick={(e)=>{e.preventDefault();navigate('/add')}}>
-        <FontAwesomeIcon icon={faCirclePlus} />
+        <FontAwesomeIcon icon={faCirclePlus} className='text-white'/>
         </button>
   </div> 
 </nav>

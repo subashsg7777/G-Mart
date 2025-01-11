@@ -94,16 +94,17 @@ const renderStars = (stars) => {
       style={{ display: 'inline-block', marginLeft: '20px', width: '65%', marginTop: '0.75rem' }}
     >
       <h1 className='tittle new-font font-bold'>{mdata.name}</h1>
-      <h3 className='money font-extrabold mt-3'>{mdata.price}</h3>
+      <h3 className='money font-extrabold mt-3' style={{color:'#1A4CA6'}}>&#8377; 
+      {mdata.price}/-</h3>
       <p className='desc new-font mt-2'>{mdata.description}</p>
       <div className='inline'>
         <button
           className='text-white p-2 new-font rounded-2xl mt-3'
-          style={{ backgroundColor: 'black', width: '150px',marginRight:'10px', marginBottom:'15px'}}
+          style={{ backgroundColor: '#1A4CA6', width: '150px',marginRight:'10px', marginBottom:'15px'}}
         >
           Buy Now !..
         </button>
-        <button className='text-white p-2 new-font rounded-2xl mt-3' style={{ backgroundColor: 'black', width: '150px',marginBottom:'15px' }} onClick={()=> addtoCart(mdata)}>Add to cart</button>
+        <button className='text-white p-2 new-font rounded-2xl mt-3' style={{ backgroundColor: '#1A4CA6', width: '150px',marginBottom:'15px' }} onClick={()=> addtoCart(mdata)}>Add to cart</button>
                 <br />
       </div>
     </div>

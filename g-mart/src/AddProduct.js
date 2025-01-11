@@ -62,7 +62,6 @@ const AddProduct = () => {
             <label className='new-font block'>Product Description : <input type='text' placeholder='  Description About Your Product' className='ml-8 h-28' style={{borderRadius:'32px',padding:'7px',width:'65%'}}onChange={(e)=>{setDescription(e.target.value)}}/></label>
             <br />
             <br />
-            <button className='new-font p-4 rounded-2xl' style={{backgroundColor:'rgba(80,80,80,0.6)',marginLeft:'70%',backdropFilter:'blur(10px)'}} onClick={handleEntry}>Add Product !..</button>
             <select
         id="categoryDropdown"
         value={selectedCategory}
@@ -80,6 +79,10 @@ const AddProduct = () => {
         <option value="Sports">Sports</option>
         <option value="Shoes">Shoes</option>
       </select>
+      <br />
+      <br />
+            <button className='new-font p-4 rounded-2xl' style={{backgroundColor:'black',marginLeft:'70%',backdropFilter:'blur(10px)',color:'white'}} onClick={handleEntry}>Add Product !..</button>
+            
         </div>
     </div>
     </>

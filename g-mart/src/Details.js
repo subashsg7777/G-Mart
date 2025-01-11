@@ -84,11 +84,16 @@ const Details = () => {
       return [...filledStars, ...emptyStars];
       }
     
-      else if (avg == 0){
+      else if (stars === 0){
         const emptyStars = Array(5).fill(<AiOutlineStar className="text-gray-400" style={{display:'inline'}}/>);
       return [...emptyStars];
       }
     };
+
+    const handleOrder = ()=>{
+      // redirect to payments with product_id
+      navigate(`/payments/${product_Id}`);
+    }
 
     useEffect(() => {
         const handleDataRetrival =  async() =>{
@@ -132,7 +137,7 @@ const Details = () => {
       }, []);
     
       return data ? (
-        <div>
+        <div style={{marginTop:'150px'}}>
           <img src={data.url} alt={data.name} className='' id='image'/>
           <div className='detail-container'>
               <h1 className='new-font font-extrabold text-2xl pt-12 flex justify-center'>{data.name}</h1>
@@ -155,25 +160,25 @@ const Details = () => {
                 Voluptas voluptatibus numquam et nam ratione.</p>
                 <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
                 <div className='inline' style={{padding:'10px'}}>
-                <button className='rounded-full' style={{border:'solid 2px gray',padding:'5px',margin:'0px auto'}}><FaTruck style={{fontSize:'48px'}} /></button>
+                <button className='rounded-full' style={{border:'solid 2px gray',padding:'5px',margin:'0px auto'}}><FaTruck style={{fontSize:'48px',color:'#F78F08'}} /></button>
                 <p>Free Delivery</p>
                 </div>
                 <div className='inline' style={{padding:'10px'}}>
-                <button className='rounded-full' style={{border:'solid 2px gray',padding:'5px',marginLeft:'8px'}}><FaMoneyBill style={{fontSize:'48px'}}/> </button>
+                <button className='rounded-full' style={{border:'solid 2px gray',padding:'5px',marginLeft:'8px'}}><FaMoneyBill style={{fontSize:'48px',color:'#F78F08'}}/> </button>
                 <p>Cash On Delivery</p>
                 </div>
                 <div className='inline' style={{padding:'10px'}}>
-                <button className='rounded-full' style={{border:'solid 2px gray',padding:'5px',marginLeft:'8px'}}><FaShieldAlt style={{fontSize:'48px'}}/> </button>
+                <button className='rounded-full' style={{border:'solid 2px gray',padding:'5px',marginLeft:'8px'}}><FaShieldAlt style={{fontSize:'48px',color:'#F78F08'}}/> </button>
                 <p>1 Year Warrenty</p>
                 </div>
                 <div className='inline' style={{padding:'10px'}}>
-                <button className='rounded-full' style={{border:'solid 2px gray',padding:'5px',marginLeft:'8px'}}><FaArrowsAlt style={{fontSize:'48px'}} /> </button>
+                <button className='rounded-full' style={{border:'solid 2px gray',padding:'5px',marginLeft:'8px'}}><FaArrowsAlt style={{fontSize:'48px',color:'#F78F08'}} /> </button>
                 <p>1-Week Replacement</p>
                 </div>
                 </div>
-              <button className='text-white p-2 new-font rounded-2xl mt-3' style={{backgroundColor:'black',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}}>Buy Now !..</button>
-              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'black',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();addtoCart(data);}}>Add to Cart</button>
-              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'black',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();handlePassing(data._id)}}>Rate This Product</button>
+              <button className='text-white p-2 new-font rounded-2xl mt-3' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();handleOrder()}}>Buy Now !..</button>
+              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();addtoCart(data);}}>Add to Cart</button>
+              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();handlePassing(data._id)}}>Rate This Product</button>
           </div>
             
             

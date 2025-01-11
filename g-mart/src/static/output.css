@@ -963,6 +963,32 @@ video {
   display: inline;
 }
 
+.mt-auto{
+  margin-top:auto;
+}
+
+.mb-auto{
+  margin-bottom:auto;
+}
+
+.ma{
+  margin: auto 0px;
+}
+
+.block{
+  display:block;
+}
+
+.rating{
+  display:center;
+  justify-content:center;
+}
+
+.text-6xl {
+  font-size: 3.75rem /* 60px */;
+  line-height: 1;
+}
+
 .flex {
   display: flex;
 }

@@ -72,9 +72,9 @@ app.post('/api/google-login', async (req, res) => {
 app.post('/api/products', async (req, res) => {
     const { name, price, description, url,z,selectedCategory } = req.body;
     const cat = selectedCategory;
-    const stars = z,count = 0;
+    const star = z,count = 0;
     try {
-        const newProduct = new Product({ name, price, description, url ,stars , count ,cat});
+        const newProduct = new Product({ name, price, description, url ,star , count ,cat});
         const saveStatus = await newProduct.save();
         return res.status(201).json(saveStatus);
     } catch (error) {
@@ -146,29 +146,28 @@ app.post('/api/addcart',authRoutes,addToCart);
 
 // Star rating feature 
 app.post('/rate-product/:productId', async (req,res)=>{
-    const {stars}= req.body;
+    const {star}= req.body;
     const {productId} = req.params;
-
     try{
         const search = await Product.findById(productId);
-
+        console.log('The Search values : ',search);
         if (!search){
             return res.status(400).json({message:"No product found"});
         }
 
-        search.stars += stars;
+        search.stars += star;
         search.count += 1;
 
         // saving the databse
         await search.save();
 
-        const avgstars = search.stars / search.count;
-        console.log("AVG Stars : ",avgstars);
+        const avgstar = search.star / search.count;
+        console.log("AVG star : ",avgstar);
         return res.status(200).json({message:"Your Rating are SAved !.."});
     }
 
-    catch{
-        console.log("Error while Accessing database !..");
+    catch(error){
+        console.log("Error while Accessing database !..",error);
         return res.status(400).json({message:'Error while accessing database !...'});
     }
 });
