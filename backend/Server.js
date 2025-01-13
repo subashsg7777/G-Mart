@@ -200,7 +200,20 @@ app.post('/catagory',async (req,res)=>{
     }
     console.log("Catagory Data : ",search);
     return res.status(200).json({ok: true,data:search});
-})
+});
+
+// backend functionality to get product deatils for payment
+app.post('/product-payment',async (req,res)=>{
+    const {product_Id} = req.body;
+
+    const search = await Product.findOne({_id:product_Id});
+    // checking if the recieved data is sucessfull or not 
+    if(!search){
+        return res.status(404).json({error:'Error While Fetching From database on SErver'});
+    }
+    console.log('the Product recieved by server for payment deatails is : ',search);
+    return res.status(200).json({data:search});
+});
 
 // modified built-in server signup functionality 
 app.post('/api/auth/signup', async (req, res) => {

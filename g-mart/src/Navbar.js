@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './static/output.css'
+import './static/output2.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping ,faLocationArrow, faUser,faCirclePlus,faStar} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from 'react-router-dom';
