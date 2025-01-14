@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './static/output.css'
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
@@ -15,6 +15,19 @@ function SignUp() {
   // initialize the navigation hook
   const navigate = useNavigate();
 
+
+  // chancking whether there is any token available in localstorage 
+  useEffect(()=>{
+    const handleAuthentication = ()=>{
+      const token = localStorage.getItem('token');
+      console.log('existing token : ',token);
+      if(token){
+        navigate('/');
+      }
+    }
+
+    handleAuthentication();
+  },[]);
   const handleSuccess = (credentialResponse) => {
     console.log("Token from Google:", credentialResponse.credential);
     // Send token to backend for verification

@@ -8,6 +8,7 @@ const Product = require('./models/Product');
 const authRoutes = require('./routes/auth');
 const { addToCart } = require('./models/Cart');
 const {Cart} = require('./models/Cart');
+const bcrypt = require('bcrypt');
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -226,7 +227,6 @@ try {
   if (user) {
     return res.status(400).json({ success: false, message: 'User already exists' });
   }
-
   // Create new user
   user = new User({ Username, Email, Password });
   await user.save();
@@ -238,7 +238,33 @@ try {
   console.error("Error during signup:", error.message);
   res.status(500).json({ success: false, message: 'Server error' });
 }
-
 });
+
+//   modified built-in server login functionality
+app.post('/api/auth/login',async (req,res)=>{
+    console.log("Server Logic for Login Is Running !..");
+    let {Email,Password} = req.body;
+    // Checking in the database 
+
+    const search = await User.findOne({Email:Email});
+    console.log('Data Fetched from Database : ',search);
+    if(!search){
+        return res.status(404).json({error:'No User Found !..'});
+    }
+    // const salt = await bcrypt.genSalt(10);
+    const databasepassword = search.Password;
+    const verification = await bcrypt.compare(Password,databasepassword);
+    console.log('Hashed Password !...',verification);
+    if(verification){
+        console.log("Password Matches !...");
+        return res.status(200).json({ok:true,message:'Sucess'});
+    }
+
+    else{
+        console.log('Password Does Not Match');
+        return res.status(400).json({error:'Password Does Not Match !...'});
+    }
+});
+
 // Start server
 app.listen(5000, () => console.log('Server is running on port 5000!'));

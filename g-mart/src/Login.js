@@ -1,5 +1,5 @@
 import './static/output.css'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +11,20 @@ const Login = () => {
     const [Password,setPassword] = useState('');
 
     const navigate = useNavigate();
+
+    // chancking whether there is any token available in localstorage 
+      // useEffect(()=>{
+      //   const handleAuthentication = ()=>{
+      //     const token = localStorage.getItem('token');
+      //     console.log('existing token : ',token);
+      //     if(token){
+      //       navigate('/');
+      //     }
+      //   }
+    
+      //   handleAuthentication();
+      // },[]);
+
 
     const handleSuccess = (credentialResponse) => {
         console.log("Token from Google:", credentialResponse.credential);
@@ -51,8 +65,10 @@ const Login = () => {
             // checking the response state 
 
         const data = await response.json();
-        if(data.success){
-          localStorage.setItem('token',data.token);
+        console.log('Data from Server : ',data);
+        if(data.ok){
+          // localStorage.setItem('token',data.token);
+          // console.log('Login Sucessfull and the token is : ',data.token);
             alert('LOG IN Successfull !...');
             console.log(data.message);
             navigate('/')
@@ -64,7 +80,7 @@ const Login = () => {
         }
 
         catch(error){
-            console.log('Error While fetching '+error);
+            console.log('Error While fetching ',error);
         }
 
         

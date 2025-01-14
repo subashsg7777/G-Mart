@@ -21,6 +21,7 @@ import Starrate from './Starrate';
 import Details from './Details';
 import Cat from './Cat';
 import Payment from './Payment';
+import Home from './Home';
 
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
     <>
     <Router>
       <Routes>
-        <Route path='/' element={<><Offer /> <Navbar /> <Card /> <Carousal /> <Images /> <InfiniteCarousel /> <Footer /></>}/>
+        <Route path='/' element={<><Home /></>}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/signin' element={<SignUp />}/>
         <Route path='/add' element={<> <AddProduct /></>}/>

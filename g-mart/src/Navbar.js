@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './static/output.css'
 import './static/output2.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping ,faLocationArrow, faUser,faCirclePlus,faStar} from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping ,faLocationArrow, faUser,faCirclePlus,faStar, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
@@ -72,6 +72,13 @@ const Navbar = () => {
         navigate(`/search/${searchterm}`);
       }
     }
+
+    // function to clear token data :
+    const handleLogout = ()=>{
+      const process = localStorage.removeItem('token');
+      console.log(process);
+      navigate('/');
+    }
   return (
 
   <nav className="p-4"  style={{backgroundColor:'#1A4CA6',position:'fixed',top:'25px',width:'100%',zIndex:50}}>
@@ -107,6 +114,11 @@ const Navbar = () => {
         {/* profile icon */}
         <button className='flex items-center ml-[100px] ' onClick={(e)=>{e.preventDefault();navigate('/signin')}}>
             <FontAwesomeIcon icon={faUser} className='mr-2 text-white' size='xl'/>
+        </button>
+
+        {/* lOG OUT icon */}
+        <button className='flex items-center ml-[100px] ' onClick={(e)=>{e.preventDefault();handleLogout()}}>
+            <FontAwesomeIcon icon={faRightFromBracket} className='mr-2 text-white' size='xl'/>
         </button>
 
         <button className='flex items-center ml-8' onClick={(e)=>{e.preventDefault();navigate('/add')}}>
