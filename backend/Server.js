@@ -267,5 +267,13 @@ app.post('/api/auth/login',async (req,res)=>{
     }
 });
 
+// server functionality to place order unique to each user 
+app.post('/order',async (req,res)=>{
+    console.log('response for Data is Recieved')
+    const {credential} = req.body;
+    console.log('Order for credentials : ',credential,' is done Sucessfully');
+    return res.status(200).json({ok:true});
+})
+
 // Start server
 app.listen(5000, () => console.log('Server is running on port 5000!'));

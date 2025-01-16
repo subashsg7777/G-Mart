@@ -2,6 +2,8 @@ import './static/output.css'
 import React, { useEffect, useState } from 'react'
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
+import bcrypt from 'bcryptjs';
+
 
 const CLIENT_ID = '493022169817-7ofv109mrudioksamgsql5invmf0pjlp.apps.googleusercontent.com';
 
@@ -38,10 +40,11 @@ const Login = () => {
             const data = res.json()
             console.log('json retriving'+data)
           })
-          .then((data) => {
+          .then(async (data) => {
             // Handle successful login (e.g., storing user data)
             console.log("User logged in:", data.name);
             localStorage.setItem("token",data.token);
+            
           })
           .catch((err) => console.log("Error logging in", err));
       };
@@ -72,6 +75,9 @@ const Login = () => {
             alert('LOG IN Successfull !...');
             console.log('token from server' ,data.token);
             localStorage.setItem('token',data.token);
+            const salt = await bcrypt.genSalt(10);
+            const usercredential = await bcrypt.hash(Email,salt);
+            localStorage.setItem('credentials',usercredential);
             navigate('/')
         }
 

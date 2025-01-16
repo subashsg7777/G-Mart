@@ -71,6 +71,27 @@ const Payment = () => {
   // import few important things
   const {product_Id} = useParams();
 
+  // function to handle order placement
+  async function handleOrder(){
+    // getting the user credential 
+    const credential = localStorage.getItem('credentials');
+    console.log('credentials for server',credential);
+    // creating an request to Server 
+    const response = await fetch('http://localhost:5000/order',{
+      headers:{'content-type':'application/json'},
+      method:'POST',
+      body:JSON.stringify({credential})
+    });
+
+    if (response.ok){
+      alert('Order Placement SucessF=full')
+    }
+
+    else{
+      console.log('Error While Fetching Data From the Server',response.error);
+    }
+  }
+
   return (
     <main style={{backgroundColor:'#E5E5E6'}}>
     <div style={{display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'#E5E5E6'}}>
@@ -103,7 +124,7 @@ const Payment = () => {
       </section>
       </div>
       <div style={{display:'flex',justifyContent:'center',alignItems:'center',marginTop:'20px',backgroundColor:'#E5E5E6'}}>
-        <button className='text-white new-font rounded-3xl mb-3' style={{width:'50%',backgroundColor:'#1A4CA6',height:'40px'}}>Place Your Order's</button>
+        <button className='text-white new-font rounded-3xl mb-3' style={{width:'50%',backgroundColor:'#1A4CA6',height:'40px'}} onClick={(e)=>{e.preventDefault(); console.log('Clicked'); handleOrder()}}>Place Your Order's</button>
       </div>
     </main>
   )
