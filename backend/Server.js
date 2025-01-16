@@ -257,7 +257,8 @@ app.post('/api/auth/login',async (req,res)=>{
     console.log('Hashed Password !...',verification);
     if(verification){
         console.log("Password Matches !...");
-        return res.status(200).json({ok:true,message:'Sucess'});
+        const token = jwt.sign({id:search._id,email:search.Email},'openssl rand -base64 32',{expiresIn:'1d'});
+        return res.status(200).json({ok:true,message:'Sucess',token:token});
     }
 
     else{

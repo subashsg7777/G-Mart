@@ -17,7 +17,7 @@ const Home = () => {
             const token = localStorage.getItem('token');
             console.log('Token For Authentication : ',token);
             if(!token){
-                navigate('/signup');
+                navigate('/signin');
             }
         }
 

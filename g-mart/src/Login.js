@@ -13,17 +13,17 @@ const Login = () => {
     const navigate = useNavigate();
 
     // chancking whether there is any token available in localstorage 
-      // useEffect(()=>{
-      //   const handleAuthentication = ()=>{
-      //     const token = localStorage.getItem('token');
-      //     console.log('existing token : ',token);
-      //     if(token){
-      //       navigate('/');
-      //     }
-      //   }
+      useEffect(()=>{
+        const handleAuthentication = ()=>{
+          const token = localStorage.getItem('token');
+          console.log('existing token : ',token);
+          if(token){
+            navigate('/');
+          }
+        }
     
-      //   handleAuthentication();
-      // },[]);
+        handleAuthentication();
+      },[]);
 
 
     const handleSuccess = (credentialResponse) => {
@@ -70,7 +70,8 @@ const Login = () => {
           // localStorage.setItem('token',data.token);
           // console.log('Login Sucessfull and the token is : ',data.token);
             alert('LOG IN Successfull !...');
-            console.log(data.message);
+            console.log('token from server' ,data.token);
+            localStorage.setItem('token',data.token);
             navigate('/')
         }
 
