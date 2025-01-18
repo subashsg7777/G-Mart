@@ -8,40 +8,11 @@ const Details = () => {
     const {product_Id} = useParams();
     const [data, setData] = useState(null);
     const navigate = useNavigate();
-    const [gps,setGps] = useState('');
-
+  const gps = localStorage.getItem('location');
     const handlePassing= (product_Id) =>{
       navigate(`/rate-page/${product_Id}`);
     }
   
-    // function to convert co-ordinates into cities
-    const fetchNearestCity = async (latitude, longitude) => {
-      const apiKey = 'c46b13c2835d4062b107a95b2f7561a1'; // Replace with your OpenCage API key
-      const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`;
-    
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('Failed to fetch city information');
-        }
-    
-        const data = await response.json();
-        const city = data.results[0]?.components?.city || 
-                     data.results[0]?.components?.town || 
-                     data.results[0]?.components?.village;
-    
-        if (city) {
-          console.log(`Nearest City: ${city}`);
-          return city;
-        } else {
-          console.error('City not found in the response');
-          return null;
-        }
-      } catch (error) {
-        console.error('Error fetching city:', error);
-        return null;
-      }
-    };
 
     // function to handle add cart event to database 
     const addtoCart = async (product)=>{
@@ -115,24 +86,7 @@ const Details = () => {
             }
         }
         
-        // getting User Co-ordinates
-        if(navigator.geolocation){
-          try{
-            // retriving location 
-            navigator.geolocation.getCurrentPosition(async (position)=>{
-              const city = await fetchNearestCity(position.coords.latitude,position.coords.longitude);
-              setGps(city);
-            },(error)=>{
-              // display particular error 
-              console.log("Error While Retriving Location from the user : ",error);
-            })
-          }
-  
-          catch{
-            // displays error message 
-            console.log("error while Getting the location !..");
-          }
-        }
+        
         handleDataRetrival();
       }, []);
     

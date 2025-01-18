@@ -22,6 +22,7 @@ import Details from './Details';
 import Cat from './Cat';
 import Payment from './Payment';
 import Home from './Home';
+import OrderDeatils from './OrderDeatils';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
         <Route path='/details/:product_Id' element={<><Offer /> <Navbar /> <Details /></>}/>
         <Route path='/catagory/:cat' element={<><Offer /> <Navbar /> <Cat /></>} />
         <Route path='/payments/:product_Id' element={<><Offer /><Navbar /><Payment /></>}/>
+        <Route path='/Orders' element = {<><Offer></Offer><Navbar /><OrderDeatils /></>} />
       </Routes>
     </Router>
 

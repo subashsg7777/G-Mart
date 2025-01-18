@@ -185,8 +185,6 @@ app.post('/details',async (req,res) =>{
     if(!search){
         return res.status(404).json({message:'The Product is not Found !..'});
     }
-    console.log("Data derieved : ",search);
-
     return res.status(200).json({data:search});
 });
 
@@ -283,7 +281,38 @@ app.post('/order',async (req,res)=>{
     }
 
     return res.status(200).json({ok:true});
-})
+});
 
+// LOGIC TO GET ORDER DETAIL 
+app.post('/order-details',async (req,res)=>{
+    const {credential} = req.body;
+
+    const search = await Order.find({credential:credential});
+    if(!search){
+        console.log("no data found on database !..");
+        return res.status(404).json({error:'no data found on database !..'});
+    }
+    console.log('Order deatils from server : ',search);
+
+    return res.status(200).json({data:search});
+});
+
+// LOGIC TO GET PRODUCT DEATILS WITH CREDENTIALS 
+
+app.post('/order-products', async (req,res)=>{
+
+    const {product_Id} = req.body;
+    console.log("Product ID's for Deatails retrival : ",product_Id)
+
+    const search = await Product.find({ _id: { $in: product_Id } });
+    if(!search){
+        console.log('No Order products Found !..');
+        return res.status(404).json({error:'No Order products Found !..'});
+    }
+
+    console.log('data from server for product request : ',search);
+
+    return res.status(200).json({search});
+});
 // Start server
 app.listen(5000, () => console.log('Server is running on port 5000!'));
