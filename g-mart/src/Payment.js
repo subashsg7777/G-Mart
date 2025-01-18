@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react';
 import PaymentButtons from './PaymentButtons';
 import './Payment.css'
@@ -8,6 +8,9 @@ const Payment = () => {
  const [data,setData] = useState('');
  const [tax,setTax] = useState('');
  const [taxpercentage,setTaxPercentage] = useState('');
+ let [location,setLocation] = useState('');
+ const navigate = useNavigate();
+
   useEffect(()=>{
     const handleProductPayment = async ()=>{
       const response = await fetch('http://localhost:5000/product-payment',{
@@ -71,6 +74,42 @@ const Payment = () => {
   // import few important things
   const {product_Id} = useParams();
 
+  // function to handle order placement
+  async function handleOrder(){
+    // getting the user Location 
+    // navigator.geolocation.getCurrentPosition((position)=>{
+    //   location = JSON.stringify({latitude:position.coords.latitude,longitude:position.coords.longitude});
+    //   setLocation(location);
+    // });
+    location = localStorage.getItem('location');
+    console.log('Current User Location : ',location);
+    // getting the user credential 
+    const credential = localStorage.getItem('credentials');
+    const product_Id = data._id;
+    console.log('credentials for server',credential,' and product_Id : ',product_Id,' and Location',location);
+    // creating an request to Server 
+    try{
+      const response = await fetch('http://localhost:5000/order',{
+        headers:{'content-type':'application/json'},
+        method:'POST',
+        body:JSON.stringify({credential,location,product_Id})
+      });
+  
+      if (response.ok){
+        alert('Order Placement SucessF=full');
+        navigate(`/details/${data._id}`);
+      }
+  
+      else{
+        console.log('Error While Fetching Data From the Server',response.error);
+      }
+    }
+
+    catch(error){
+      console.log('error message from the try catch : ',error);
+    }
+  }
+
   return (
     <main style={{backgroundColor:'#E5E5E6'}}>
     <div style={{display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'#E5E5E6'}}>
@@ -103,7 +142,7 @@ const Payment = () => {
       </section>
       </div>
       <div style={{display:'flex',justifyContent:'center',alignItems:'center',marginTop:'20px',backgroundColor:'#E5E5E6'}}>
-        <button className='text-white new-font rounded-3xl mb-3' style={{width:'50%',backgroundColor:'#1A4CA6',height:'40px'}}>Place Your Order's</button>
+        <button className='text-white new-font rounded-3xl mb-3' style={{width:'50%',backgroundColor:'#1A4CA6',height:'40px'}} onClick={(e)=>{e.preventDefault(); console.log('Clicked'); handleOrder()}}>Place Your Order's</button>
       </div>
     </main>
   )

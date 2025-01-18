@@ -21,6 +21,8 @@ import Starrate from './Starrate';
 import Details from './Details';
 import Cat from './Cat';
 import Payment from './Payment';
+import Home from './Home';
+import OrderDeatils from './OrderDeatils';
 
 
 function App() {
@@ -28,7 +30,7 @@ function App() {
     <>
     <Router>
       <Routes>
-        <Route path='/' element={<><Offer /> <Navbar /> <Card /> <Carousal /> <Images /> <InfiniteCarousel /> <Footer /></>}/>
+        <Route path='/' element={<><Home /></>}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/signin' element={<SignUp />}/>
         <Route path='/add' element={<> <AddProduct /></>}/>
@@ -38,6 +40,7 @@ function App() {
         <Route path='/details/:product_Id' element={<><Offer /> <Navbar /> <Details /></>}/>
         <Route path='/catagory/:cat' element={<><Offer /> <Navbar /> <Cat /></>} />
         <Route path='/payments/:product_Id' element={<><Offer /><Navbar /><Payment /></>}/>
+        <Route path='/Orders' element = {<><Offer></Offer><Navbar /><OrderDeatils /></>} />
       </Routes>
     </Router>
 

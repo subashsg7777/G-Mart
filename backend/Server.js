@@ -8,6 +8,8 @@ const Product = require('./models/Product');
 const authRoutes = require('./routes/auth');
 const { addToCart } = require('./models/Cart');
 const {Cart} = require('./models/Cart');
+const bcrypt = require('bcrypt');
+const Order = require('./models/Orders');
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -183,8 +185,6 @@ app.post('/details',async (req,res) =>{
     if(!search){
         return res.status(404).json({message:'The Product is not Found !..'});
     }
-    console.log("Data derieved : ",search);
-
     return res.status(200).json({data:search});
 });
 
@@ -226,7 +226,6 @@ try {
   if (user) {
     return res.status(400).json({ success: false, message: 'User already exists' });
   }
-
   // Create new user
   user = new User({ Username, Email, Password });
   await user.save();
@@ -238,7 +237,82 @@ try {
   console.error("Error during signup:", error.message);
   res.status(500).json({ success: false, message: 'Server error' });
 }
+});
 
+//   modified built-in server login functionality
+app.post('/api/auth/login',async (req,res)=>{
+    console.log("Server Logic for Login Is Running !..");
+    let {Email,Password} = req.body;
+    // Checking in the database 
+
+    const search = await User.findOne({Email:Email});
+    console.log('Data Fetched from Database : ',search);
+    if(!search){
+        return res.status(404).json({error:'No User Found !..'});
+    }
+    // const salt = await bcrypt.genSalt(10);
+    const databasepassword = search.Password;
+    const verification = await bcrypt.compare(Password,databasepassword);
+    console.log('Hashed Password !...',verification);
+    if(verification){
+        console.log("Password Matches !...");
+        const token = jwt.sign({id:search._id,email:search.Email},'openssl rand -base64 32',{expiresIn:'1d'});
+        return res.status(200).json({ok:true,message:'Sucess',token:token});
+    }
+
+    else{
+        console.log('Password Does Not Match');
+        return res.status(400).json({error:'Password Does Not Match !...'});
+    }
+});
+
+// server functionality to place order unique to each user 
+app.post('/order',async (req,res)=>{
+    console.log('response for Data is Recieved')
+    const {credential,location,product_Id} = req.body;
+    console.log('Data for orders',credential,' and Location : ', location , 'Product_Id : ',product_Id,' is done Sucessfully');
+    try{
+    order = new Order({product_Id,credential,location});
+    await order.save();
+    }
+    catch(error){
+        console.log('Error While Saving Data to Database : ',error);
+        return res.status(400).json({error:error});
+    }
+
+    return res.status(200).json({ok:true});
+});
+
+// LOGIC TO GET ORDER DETAIL 
+app.post('/order-details',async (req,res)=>{
+    const {credential} = req.body;
+
+    const search = await Order.find({credential:credential});
+    if(!search){
+        console.log("no data found on database !..");
+        return res.status(404).json({error:'no data found on database !..'});
+    }
+    console.log('Order deatils from server : ',search);
+
+    return res.status(200).json({data:search});
+});
+
+// LOGIC TO GET PRODUCT DEATILS WITH CREDENTIALS 
+
+app.post('/order-products', async (req,res)=>{
+
+    const {product_Id} = req.body;
+    console.log("Product ID's for Deatails retrival : ",product_Id)
+
+    const search = await Product.find({ _id: { $in: product_Id } });
+    if(!search){
+        console.log('No Order products Found !..');
+        return res.status(404).json({error:'No Order products Found !..'});
+    }
+
+    console.log('data from server for product request : ',search);
+
+    return res.status(200).json({search});
 });
 // Start server
 app.listen(5000, () => console.log('Server is running on port 5000!'));

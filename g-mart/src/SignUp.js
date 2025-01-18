@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './static/output.css'
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import bcrypt from 'bcryptjs';
+
 const CLIENT_ID = '493022169817-7ofv109mrudioksamgsql5invmf0pjlp.apps.googleusercontent.com';
 
 function SignUp() {
@@ -15,6 +17,19 @@ function SignUp() {
   // initialize the navigation hook
   const navigate = useNavigate();
 
+
+  // chancking whether there is any token available in localstorage 
+  useEffect(()=>{
+    const handleAuthentication = ()=>{
+      const token = localStorage.getItem('token');
+      console.log('existing token : ',token);
+      if(token){
+        navigate('/');
+      }
+    }
+
+    handleAuthentication();
+  },[]);
   const handleSuccess = (credentialResponse) => {
     console.log("Token from Google:", credentialResponse.credential);
     // Send token to backend for verification
@@ -91,6 +106,9 @@ const handleSubmit = async (e)=>{
         console.log('the token is : ',data.token)
         localStorage.setItem('token',data.token); 
           alert('Sign In Sucessfully');
+          const salt = await bcrypt.genSalt(10);
+                      const usercredential = await bcrypt.hash(Email,salt);
+                      localStorage.setItem('credentials',usercredential);
           navigate('/');
       }
 
