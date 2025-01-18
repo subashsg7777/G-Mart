@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react';
 import PaymentButtons from './PaymentButtons';
 import './Payment.css'
@@ -8,6 +8,9 @@ const Payment = () => {
  const [data,setData] = useState('');
  const [tax,setTax] = useState('');
  const [taxpercentage,setTaxPercentage] = useState('');
+ let [location,setLocation] = useState('');
+ const navigate = useNavigate();
+
   useEffect(()=>{
     const handleProductPayment = async ()=>{
       const response = await fetch('http://localhost:5000/product-payment',{
@@ -73,22 +76,37 @@ const Payment = () => {
 
   // function to handle order placement
   async function handleOrder(){
+    // getting the user Location 
+    // navigator.geolocation.getCurrentPosition((position)=>{
+    //   location = JSON.stringify({latitude:position.coords.latitude,longitude:position.coords.longitude});
+    //   setLocation(location);
+    // });
+    location = localStorage.getItem('location');
+    console.log('Current User Location : ',location);
     // getting the user credential 
     const credential = localStorage.getItem('credentials');
-    console.log('credentials for server',credential);
+    const product_Id = data._id;
+    console.log('credentials for server',credential,' and product_Id : ',product_Id,' and Location',location);
     // creating an request to Server 
-    const response = await fetch('http://localhost:5000/order',{
-      headers:{'content-type':'application/json'},
-      method:'POST',
-      body:JSON.stringify({credential})
-    });
-
-    if (response.ok){
-      alert('Order Placement SucessF=full')
+    try{
+      const response = await fetch('http://localhost:5000/order',{
+        headers:{'content-type':'application/json'},
+        method:'POST',
+        body:JSON.stringify({credential,location,product_Id})
+      });
+  
+      if (response.ok){
+        alert('Order Placement SucessF=full');
+        navigate(`/details/${data._id}`);
+      }
+  
+      else{
+        console.log('Error While Fetching Data From the Server',response.error);
+      }
     }
 
-    else{
-      console.log('Error While Fetching Data From the Server',response.error);
+    catch(error){
+      console.log('error message from the try catch : ',error);
     }
   }
 

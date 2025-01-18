@@ -53,6 +53,7 @@ const Navbar = () => {
           navigator.geolocation.getCurrentPosition(async (position)=>{
             const city = await fetchNearestCity(position.coords.latitude,position.coords.longitude);
             setGps(city);
+            localStorage.setItem("location",city);
           },(error)=>{
             // display particular error 
             setError(error);

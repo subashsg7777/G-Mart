@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth');
 const { addToCart } = require('./models/Cart');
 const {Cart} = require('./models/Cart');
 const bcrypt = require('bcrypt');
+const Order = require('./models/Orders');
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -270,8 +271,17 @@ app.post('/api/auth/login',async (req,res)=>{
 // server functionality to place order unique to each user 
 app.post('/order',async (req,res)=>{
     console.log('response for Data is Recieved')
-    const {credential} = req.body;
-    console.log('Order for credentials : ',credential,' is done Sucessfully');
+    const {credential,location,product_Id} = req.body;
+    console.log('Data for orders',credential,' and Location : ', location , 'Product_Id : ',product_Id,' is done Sucessfully');
+    try{
+    order = new Order({product_Id,credential,location});
+    await order.save();
+    }
+    catch(error){
+        console.log('Error While Saving Data to Database : ',error);
+        return res.status(400).json({error:error});
+    }
+
     return res.status(200).json({ok:true});
 })
 

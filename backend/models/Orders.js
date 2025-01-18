@@ -1,43 +1,17 @@
 const mongoose = require('mongoose');
 
-const OrdersSchema = mongoose.Schema({
-    product_id:{
+const OrdersSchema = new mongoose.Schema({
+    product_Id:{
         type: String,
-        required:true
+        required:false
     },
-    credentials:{
+    credential:{
         type: String,
-        required:true
+        required:false
     },
     location:{
         type:String,
-        required:true
-    },
-    price:{
-        type:Number,
-        require:true
-    },
-    name:{
-        type:String,
-        require:true
-    },
-    url:{
-        type:String,
-        required:true
-    },
-
-    stars:{
-        type:Number,
-        required:true
-    },
-
-    count:{
-        type:Number,
-        required:true
-    },
-    description:{
-        type:String,
-        required:true
+        required:false
     }
 });
 
