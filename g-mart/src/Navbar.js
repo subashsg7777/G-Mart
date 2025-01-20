@@ -80,6 +80,14 @@ const Navbar = () => {
       console.log(process);
       navigate('/');
     }
+
+    // function to handle key strokes during search 
+    const handleKeyDown = (event)=>{
+      if(event.key === 'Enter'){
+        console.log('Enter key Action is Triggered !...');
+        handleRedirect();
+      }
+    }
   return (
 
   <nav className="p-4"  style={{backgroundColor:'#1A4CA6',position:'fixed',top:'25px',width:'100%',zIndex:50}}>
@@ -95,7 +103,9 @@ const Navbar = () => {
             type="text"
             placeholder="Search..."
             className="p-2 rounded-l-md border-none focus:outline-none w-[600px]"
+            value={searchterm}
             onChange={(e)=>{setSearchterm(e.target.value)}}
+            onKeyDown={handleKeyDown}
           />
           <button className="bg-blue-600 hover:bg-green-700 text-white p-2 rounded-r-md" onClick={handleRedirect}>
             Search

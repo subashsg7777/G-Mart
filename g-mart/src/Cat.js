@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AiFillStar,AiOutlineStar } from 'react-icons/ai';
 
 const Cat = () => {
   // catagory data from hero section 
   const {cat} = useParams();
   const [data,setData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(()=>{
     const handledataRetrival = async ()  =>{
@@ -93,7 +94,7 @@ const renderStars = (stars) => {
       className='side mt-3'
       style={{ display: 'inline-block', marginLeft: '20px', width: '65%', marginTop: '0.75rem' }}
     >
-      <h1 className='tittle new-font font-bold'>{mdata.name}</h1>
+      <h1 className='tittle new-font font-bold' onClick={()=>navigate(`/details/${mdata._id}`)}>{mdata.name}</h1>
       <h3 className='money font-extrabold mt-3' style={{color:'#1A4CA6'}}>&#8377; 
       {mdata.price}/-</h3>
       <p className='desc new-font mt-2'>{mdata.description}</p>

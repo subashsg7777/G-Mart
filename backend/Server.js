@@ -181,7 +181,7 @@ app.post('/details',async (req,res) =>{
     console.log("Product ID from server : ",product_Id);
 
     const search = await Product.findOne({_id:product_Id});
-
+    console.log('product search results : ',search);
     if(!search){
         return res.status(404).json({message:'The Product is not Found !..'});
     }

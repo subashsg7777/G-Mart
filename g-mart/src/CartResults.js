@@ -80,7 +80,7 @@ const handledeletion = async (name)=>{
           <div key={index} style={{border:'1px solid black',width:'98%',display:'flex',alignItems:'center'}} className='m-4' >
             <img src={product.url} alt={product.name} style={{display:'inline',width:'300px',height:'fit-content'}}/>
             <div className='side mt-3' style={{display:'inline-block',marginLeft:'20px',width:'65%',marginTop:'0.75rem'}}>
-            <h1 className='tittle new-font font-bold'>{product.name}</h1>
+            <h1 className='tittle new-font font-bold' onClick={()=>navigate(`/details/${product._id}`)}>{product.name}</h1>
             <h3 className='money font-extrabold mt-3'>{product.price}</h3>
             <p className='desc new-font mt-2'>{product.description}</p>
             <div className='inline'>
