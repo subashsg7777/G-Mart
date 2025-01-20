@@ -314,5 +314,20 @@ app.post('/order-products', async (req,res)=>{
 
     return res.status(200).json({search});
 });
+
+// server input for cart product details 
+
+app.post('/cpdetails', async (req,res)=>{
+    console.log('Getting product Details')
+    const {name} = req.body;
+    console.log("Product ID from server : ",name);
+
+    const search = await Product.findOne({name:name});
+    console.log('product search results : ',search);
+    if(!search){
+        return res.status(404).json({message:'The Product is not Found !..'});
+    }
+    return res.status(200).json({data:search});
+})
 // Start server
 app.listen(5000, () => console.log('Server is running on port 5000!'));
