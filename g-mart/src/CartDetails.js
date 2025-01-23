@@ -5,9 +5,10 @@ import { FaTruck, FaMoneyBill, FaShieldAlt, faArrow, FaArrowsAlt} from 'react-ic
 import './Details.css'
 
 const Details = () => {
-    const {name} = useParams();
+    const {pid} = useParams();
     const [data, setData] = useState(null);
     const navigate = useNavigate();
+    const [product_Id,setProduct_Id] = useState('');
   const gps = localStorage.getItem('location');
     const handlePassing= (product_Id) =>{
       navigate(`/rate-page/${product_Id}`);
@@ -26,6 +27,7 @@ const Details = () => {
           Authorization : `Bearer  ${localStorage.getItem('token')}`,
         },
         body:JSON.stringify({
+          pid:product._id,
           usertoken:userdata,
           name:product.name,
           price:product.price,
@@ -61,18 +63,19 @@ const Details = () => {
       }
     };
 
-    // const handleOrder = ()=>{
-    //   // redirect to payments with product_id
-    //   navigate(`/payments/${product_Id}`);
-    // }
+    const handleOrder = ()=>{
+      // redirect to payments with product_id
+      navigate(`/payments/${product_Id}`);
+    }
 
     useEffect(() => {
         const handleDataRetrival =  async() =>{
-          console.log('Product_name : ',name);
+          setProduct_Id(pid);
+          console.log('Product_name : ',pid);
             const response = await fetch('http://localhost:5000/cpdetails',{
                 method:'POST',
                 headers:{'content-type':'application/json'},
-                body:JSON.stringify({name:name}),
+                body:JSON.stringify({_id:pid}),
             });
             
             if (response.ok){
@@ -130,7 +133,7 @@ const Details = () => {
                 <p>1-Week Replacement</p>
                 </div>
                 </div>
-              <button className='text-white p-2 new-font rounded-2xl mt-3' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();}}>Buy Now !..</button>
+              <button className='text-white p-2 new-font rounded-2xl mt-3' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();handleOrder(data.pid)}}>Buy Now !..</button>
               <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();addtoCart(data);}}>Add to Cart</button>
               <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();handlePassing(data._id)}}>Rate This Product</button>
           </div>

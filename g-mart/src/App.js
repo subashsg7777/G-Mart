@@ -41,7 +41,7 @@ function App() {
         <Route path='/catagory/:cat' element={<><Offer /> <Navbar /> <Cat /></>} />
         <Route path='/payments/:product_Id' element={<><Offer /><Navbar /><Payment /></>}/>
         <Route path='/Orders' element = {<><Offer></Offer><Navbar /><OrderDeatils /></>} />
-        <Route path='/cpdetails/:name' element={<><Offer /> <Navbar /> <CartDetails /></>}/>
+        <Route path='/cpdetails/:pid' element={<><Offer /> <Navbar /> <CartDetails /></>}/>
       </Routes>
     </Router>
 

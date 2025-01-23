@@ -89,7 +89,7 @@ const Cart = mongoose.model('Cart', cartSchema);
 // Logic to save data to the database
 const addToCart = async (req, res) => {
     const { pid,usertoken, name, price, description, url,stars } = req.body;
-    console.log('The received value in Cart is', name);
+    console.log('The received value in Cart is', pid);
     try {
         const cartItem = new Cart({
             pid:pid,

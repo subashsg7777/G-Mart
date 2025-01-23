@@ -26,6 +26,7 @@ const Details = () => {
           Authorization : `Bearer  ${localStorage.getItem('token')}`,
         },
         body:JSON.stringify({
+          pid:product._id,
           usertoken:userdata,
           name:product.name,
           price:product.price,

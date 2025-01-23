@@ -202,13 +202,13 @@ const OrderDetails = () => {
                             <p className="desc new-font mt-2">{product.description}</p>
                             <div className="inline">
                                 <button
-                                    className="text-white p-2 new-font rounded-2xl mt-3"
+                                    className="text-white p-2 new-font rounded-2xl mt-3 mb-3"
                                     style={{ backgroundColor: '#1A4CA6', width: '150px' }}
                                 >
                                     Buy Now !..
                                 </button>
                             </div>
-                            <div className="inline-block">
+                            <div className="inline-block mb-3">
                                 <button
                                     className="text-white new-font rounded-2xl mt-3 ml-3"
                                     style={{

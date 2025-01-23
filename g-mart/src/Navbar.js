@@ -2,17 +2,16 @@ import React, { useEffect, useState } from 'react'
 import './static/output.css'
 import './static/output2.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping ,faLocationArrow, faUser,faCirclePlus,faStar, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from 'react-router-dom';
+import { faCartShopping ,faLocationArrow, faUser,faCirclePlus,faStar, faRightFromBracket,faBars, faBox, faBoxOpen} from "@fortawesome/free-solid-svg-icons";
+import { Navigate, redirect, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   // location useStates
   let [gps,setGps] = useState('');
     let [error,setError] = useState(null);
     let [searchterm,setSearchterm] = useState('');
-
-    // initialize the navigation hook
     const navigate = useNavigate();
+    const[menuOpen,setMenuOpen] = useState(true);
 
     // function to convert co-ordinates into cities
     const fetchNearestCity = async (latitude, longitude) => {
@@ -89,8 +88,8 @@ const Navbar = () => {
       }
     }
   return (
-
-  <nav className="p-4"  style={{backgroundColor:'#1A4CA6',position:'fixed',top:'25px',width:'100%',zIndex:50}}>
+    //  old unresponsive nav bar 
+  <nav className="p-4 container flex items-center"  style={{backgroundColor:'#1A4CA6',position:'fixed',top:'25px',width:'100vw'}}>
   <div className="container flex items-center ">
     
     <div className=" flex items-center text-white text-2xl font-bold mr-[200px] ">
@@ -113,7 +112,7 @@ const Navbar = () => {
           </button>
         </div>
         {/* cart icon  */}
-        <button className="flex items-center ml-[100px] " onClick={(e)=>{e.preventDefault();navigate('/showcart')}}>
+        <button className="flex items-center ml-[100px]" onClick={(e)=>{e.preventDefault();navigate('/showcart')}}>
           <FontAwesomeIcon icon={faCartShopping} className="mr-2 text-white" size='xl'/>
         </button>
 
@@ -123,13 +122,18 @@ const Navbar = () => {
         </button>
         
         {/* profile icon */}
-        <button className='flex items-center ml-[100px] ' onClick={(e)=>{e.preventDefault();navigate('/signin')}}>
+        <button className='flex items-center ml-5 ' onClick={(e)=>{e.preventDefault();navigate('/signin')}}>
             <FontAwesomeIcon icon={faUser} className='mr-2 text-white' size='xl'/>
         </button>
 
         {/* lOG OUT icon */}
-        <button className='flex items-center ml-[100px] ' onClick={(e)=>{e.preventDefault();handleLogout()}}>
+        <button className='flex items-center ml-5 ' onClick={(e)=>{e.preventDefault();handleLogout()}}>
             <FontAwesomeIcon icon={faRightFromBracket} className='mr-2 text-white' size='xl'/>
+        </button>
+
+        {/* Orders icon */}
+        <button className='flex items-center ml-5 ' onClick={(e)=>{e.preventDefault();navigate('/Orders')}}>
+            <FontAwesomeIcon icon={faBoxOpen} className='mr-2 text-white' size='xl' />
         </button>
 
         <button className='flex items-center ml-8' onClick={(e)=>{e.preventDefault();navigate('/add')}}>
@@ -137,7 +141,6 @@ const Navbar = () => {
         </button>
   </div> 
 </nav>
-
   )
 }
 
