@@ -3,6 +3,7 @@ import { useParams , useNavigate} from 'react-router-dom'
 import {AiFillStar,AiOutlineStar} from 'react-icons/ai';
 import { FaTruck, FaMoneyBill, FaShieldAlt, faArrow, FaArrowsAlt} from 'react-icons/fa';
 import './Details.css'
+import addToCart from './addToCart';
 
 const Details = () => {
     const {product_Id} = useParams();
@@ -14,37 +15,6 @@ const Details = () => {
     }
   
 
-    // function to handle add cart event to database 
-    const addtoCart = async (product)=>{
-      const userdata = localStorage.getItem('token')
-      const username = userdata;
-      console.log('User Token derrived data is : ',username);
-      const response = await fetch('http://localhost:5000/api/addcart',{
-        method:'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization : `Bearer  ${localStorage.getItem('token')}`,
-        },
-        body:JSON.stringify({
-          pid:product._id,
-          usertoken:userdata,
-          name:product.name,
-          price:product.price,
-          description:product.description,
-          url:product.url,
-          stars:0
-        })
-      });
-
-      if (response.ok){
-        const data = await response.json();
-        alert(data.message);
-      }
-
-      else{
-        alert('Error:While trying to connect to Server')
-      }
-    }
 
     // Function to render stars
     const renderStars = (stars,count) => {
@@ -132,7 +102,7 @@ const Details = () => {
                 </div>
                 </div>
               <button className='text-white p-2 new-font rounded-2xl mt-3' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();handleOrder()}}>Buy Now !..</button>
-              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();addtoCart(data);}}>Add to Cart</button>
+              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();addToCart(data);}}>Add to Cart</button>
               <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();handlePassing(data._id)}}>Rate This Product</button>
           </div>
             
