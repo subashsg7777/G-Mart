@@ -110,6 +110,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import addToCart from './addToCart';
 
 const OrderDetails = () => {
     const [orderDetails, setOrderDetails] = useState([]); // Initialize as an array
@@ -218,8 +219,9 @@ const OrderDetails = () => {
                                         alignContent: 'center',
                                         padding: '8px 12px',
                                     }}
+                                    onClick={()=>addToCart(product)}
                                 >
-                                    Remove From Cart
+                                    Add To Cart
                                 </button>
                             </div>
                         </div>
