@@ -971,6 +971,30 @@ nav a {
   }
 }
 
+@media (min-width: 768px) {
+  .md\:text-xs {
+      font-size: 0.75rem /* 12px */;
+      line-height: 1rem /* 16px */;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:mr-\[100px\] {
+      margin-right: 100px;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:bg-black {
+      --tw-bg-opacity: 1;
+      background-color: rgb(0 0 0 / var(--tw-bg-opacity)) /* #000000 */;
+  }
+}
+
+.hidden {
+  display: none;
+  background-color:'black';
+}
 
 .mx-auto {
   margin-left: auto;
