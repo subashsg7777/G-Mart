@@ -991,6 +991,18 @@ nav a {
   }
 }
 
+.ml-2 {
+  margin-left: 0.5rem /* 8px */;
+}
+
+.mt-\[150px\] {
+  margin-top: 150px;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem /* 24px */;
+}
+
 .hidden {
   display: none;
   background-color:'black';

@@ -79,10 +79,12 @@ const renderStars = (stars) => {
 
   return data ? (
     <>
+
+    <h1 className='text-2xl new-font font-extrabold mt-[150px] mb-6 ml-2' >{cat} ({data.length}) : </h1>
     {data.map((mdata, index) => (
   <div
     key={index} // Use a unique key for each item
-    style={{ border: '1px solid black', width: '98%', display: 'flex', alignItems: 'center',marginTop:'150px' }}
+    style={{ border: '1px solid black', width: '98%', display: 'flex', alignItems: 'center' }}
     className='m-4'
   >
     <img

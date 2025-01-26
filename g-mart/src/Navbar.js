@@ -9,13 +9,13 @@ import {
   faCirclePlus,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Initial screen size
   const [searchterm, setSearchterm] = useState("");
-  const [gps, setGps] = useState("Your Location");
+  const [gps, setGps] = useState("Fetching..");
   const navigate = useNavigate();
 
   // function to convert co-ordinates into cities
@@ -138,6 +138,7 @@ const Navbar = () => {
       display: "flex",
       alignItems: "center",
       width: "100%",
+      color:'black',
       maxWidth: isMobile ? "100%" : "600px",
     },
     searchInput: {
@@ -183,7 +184,7 @@ const Navbar = () => {
     <nav style={styles.navbar}>
       <div style={styles.container}>
         {/* Logo */}
-        <div style={styles.logo}>G-Mart</div>
+        <div style={styles.logo} onClick={()=>navigate('/')}>G-Mart</div>
 
         {/* Hamburger Menu for Small Screens */}
         <button

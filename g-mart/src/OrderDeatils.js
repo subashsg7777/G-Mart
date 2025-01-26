@@ -179,14 +179,15 @@ const OrderDetails = () => {
     };
 
     return (
-        <>
+        <div style={{marginTop:'125px'}}>
+        <h1 className='text-2xl font-extrabold new-font ml-2'> Your Orders ({productDetail.length}) : </h1>
             {!productDetail.length ? (
                 <h1>No Data</h1>
             ) : (
                 productDetail.map((product, index) => (
                     <div
                         key={index}
-                        style={{ border: '1px solid black', width: '98%', display: 'flex', alignItems: 'center',marginTop:'125px' }}
+                        style={{ border: '1px solid black', width: '98%', display: 'flex', alignItems: 'center',marginTop:'25px' }}
                         className="m-4 mt-3"
                     >
                         <img
@@ -214,9 +215,10 @@ const OrderDetails = () => {
                                     className="text-white new-font rounded-2xl mt-3 ml-3"
                                     style={{
                                         backgroundColor: '#1A4CA6',
-                                        width: '180px',
+                                        width: '150px',
                                         display: 'flex',
                                         alignContent: 'center',
+                                        justifyContent:'center',
                                         padding: '8px 12px',
                                     }}
                                     onClick={()=>addToCart(product)}
@@ -231,7 +233,7 @@ const OrderDetails = () => {
                     </div>
                 ))
             )}
-        </>
+        </div>
     );
 };
 
