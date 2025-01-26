@@ -11,7 +11,7 @@ const Details = () => {
     const navigate = useNavigate();
   const gps = localStorage.getItem('location');
     const handlePassing= (product_Id) =>{
-      navigate(`/rate-page/${product_Id}`);
+      navigate(`/review/${product_Id}`);
     }
   
 

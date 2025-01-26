@@ -1,0 +1,36 @@
+/* Center the container both vertically and horizontally */
+.centeredcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: green; */
+  width: fit-content;
+  padding: 50px;
+  border-radius: 32px;
+  margin: auto ;
+  /* background-color:green; */
+  box-shadow: 0 0 20px 100px black; /* Thick black shadow */
+}
+
+/* Feedback box styles */
+.feedbackbox {
+  background-color: white;
+  width: 400px;
+  height: 200px;
+  border-radius: 32px;
+  padding-left: 15px;
+  padding-top:15px;
+  border: 2px solid black;
+}
+
+/* Rating section styles */
+.ratingsection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.stars {
+  margin-top: 10px;
+}

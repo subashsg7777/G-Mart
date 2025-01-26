@@ -10,6 +10,7 @@ const { addToCart } = require('./models/Cart');
 const {Cart} = require('./models/Cart');
 const bcrypt = require('bcrypt');
 const Order = require('./models/Orders');
+const FileSystem = require('fs');
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -29,6 +30,20 @@ app.use((req, res, next) => {
 
 // Auth routes
 app.use(authRoutes);
+
+// utility function to read data from JSON file 
+function readData(){
+    if(!FileSystem.existsSync('Review_Data.json')){
+         FileSystem.writeFileSync('Review_Data.json',JSON.stringify({}));
+    }
+
+    return JSON.parse(FileSystem.readFileSync('Review_Data.json','utf-8'));
+}
+
+// utility function to write data into JSON file 
+function writeData(data){
+    return FileSystem.writeFileSync('Review_Data.json',JSON.stringify(data,null,2));
+}
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/G-Mart', {
@@ -148,7 +163,7 @@ app.post('/api/addcart',authRoutes,addToCart);
 
 // Star rating feature 
 app.post('/rate-product/:productId', async (req,res)=>{
-    const {star}= req.body;
+    const {star , username , id , review}= req.body;
     const {productId} = req.params;
     try{
         const search = await Product.findById(productId);
@@ -162,6 +177,28 @@ app.post('/rate-product/:productId', async (req,res)=>{
 
         // saving the databse
         await search.save();
+
+        // trying to add the reviews to JSON file
+        try{
+            console.log("review Data's Are : ", username,' ', review,' ',productId);
+            const data = readData();
+
+            // checking whether the review is alrady available or not 
+            if(data[productId]){
+                data[productId].reviews.push({username,review});
+            }
+
+            else{
+                data[productId] = {reviews : [{username,review}]};
+            }
+
+            writeData(data);
+            console.log('Review Data Are Sucessfully Sent to JSON File Sucessfully !...',data);
+        }
+
+        catch(error){
+            console.log('Error While Sending Data to JSON File : ',error);
+        }
 
         const avgstar = search.star / search.count;
         console.log("AVG star : ",avgstar);

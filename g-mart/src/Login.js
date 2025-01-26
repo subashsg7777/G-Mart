@@ -78,6 +78,7 @@ const Login = () => {
             const salt = await bcrypt.genSalt(10);
             const usercredential = await bcrypt.hash(Email,salt);
             localStorage.setItem('credentials',usercredential);
+            localStorage.setItem('username',Email.slice(0,5));
             navigate('/')
         }
 

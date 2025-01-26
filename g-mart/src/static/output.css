@@ -240,6 +240,13 @@ strong {
   justify-content: center;
 }
 
+.centereddiv{
+  width:fit-content;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 /* .add-background {
   background-image: url('cart.png');
   background-size: cover;
@@ -990,6 +997,11 @@ nav a {
       background-color: rgb(0 0 0 / var(--tw-bg-opacity)) /* #000000 */;
   }
 }
+
+.mb-6 {
+  margin-bottom: 1.5rem /* 24px */;
+}
+
 
 .ml-2 {
   margin-left: 0.5rem /* 8px */;

@@ -24,6 +24,7 @@ import Payment from './Payment';
 import Home from './Home';
 import OrderDeatils from './OrderDeatils';
 import CartDetails from './CartDetails'
+import Reviews from './Reviews';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path='/payments/:product_Id' element={<><Offer /><Navbar /><Payment /></>}/>
         <Route path='/Orders' element = {<><Offer></Offer><Navbar /><OrderDeatils /></>} />
         <Route path='/cpdetails/:pid' element={<><Offer /> <Navbar /> <CartDetails /></>}/>
+        <Route path='/review/:product_Id' element={<> <Reviews /></>} />
       </Routes>
     </Router>
 
