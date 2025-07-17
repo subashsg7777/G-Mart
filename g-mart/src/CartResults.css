@@ -1,0 +1,7 @@
+.box{
+    border: 1px solid black;
+}
+
+.side,.box{
+    display:inline;
+}

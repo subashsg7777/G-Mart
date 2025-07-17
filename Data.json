@@ -1,0 +1,92 @@
+[
+  {
+    "name": "Apple iPhone 15 Pro",
+    "price": 999,
+    "description": "Latest Apple iPhone with A17 Bionic chip and ProMotion display.",
+    "url": "https://example.com/images/iphone15pro.jpg",
+    "stars": 5,
+    "count": 150,
+    "cat": "Mobile Phones"
+  },
+  {
+    "name": "Samsung Galaxy S24 Ultra",
+    "price": 1199,
+    "description": "Premium Android phone with an advanced camera system and S Pen support.",
+    "url": "https://example.com/images/galaxys24ultra.jpg",
+    "stars": 4.8,
+    "count": 100,
+    "cat": "Mobile Phones"
+  },
+  {
+    "name": "Dell XPS 15",
+    "price": 1599,
+    "description": "High-performance laptop with Intel Core i7 and 4K OLED display.",
+    "url": "https://example.com/images/dellxps15.jpg",
+    "stars": 4.7,
+    "count": 85,
+    "cat": "Laptops"
+  },
+  {
+    "name": "ASUS ROG Strix G16",
+    "price": 1899,
+    "description": "Powerful gaming laptop with RTX 4070 and high refresh rate display.",
+    "url": "https://example.com/images/rogstrixg16.jpg",
+    "stars": 4.6,
+    "count": 75,
+    "cat": "Laptops"
+  },
+  {
+    "name": "LG UltraGear 27GN950",
+    "price": 699,
+    "description": "4K UHD gaming monitor with 144Hz refresh rate and G-Sync support.",
+    "url": "https://example.com/images/lgultragear.jpg",
+    "stars": 4.9,
+    "count": 60,
+    "cat": "Monitors"
+  },
+  {
+    "name": "Sony WH-1000XM5",
+    "price": 399,
+    "description": "Industry-leading noise-canceling headphones with superior sound quality.",
+    "url": "https://example.com/images/sonywh1000xm5.jpg",
+    "stars": 4.8,
+    "count": 120,
+    "cat": "Accessories"
+  },
+  {
+    "name": "Nike Air Zoom Pegasus 39",
+    "price": 130,
+    "description": "Comfortable and stylish running shoes with responsive cushioning.",
+    "url": "https://example.com/images/nikepegasus39.jpg",
+    "stars": 4.7,
+    "count": 200,
+    "cat": "Shoes"
+  },
+  {
+    "name": "Adidas Ultraboost 22",
+    "price": 180,
+    "description": "Performance running shoes with Boost cushioning for maximum energy return.",
+    "url": "https://example.com/images/adidasultraboost22.jpg",
+    "stars": 4.6,
+    "count": 180,
+    "cat": "Shoes"
+  },
+  {
+    "name": "Samsung 980 Pro SSD 1TB",
+    "price": 159,
+    "description": "High-speed NVMe SSD with PCIe Gen 4 support for ultra-fast performance.",
+    "url": "https://example.com/images/samsung980pro.jpg",
+    "stars": 4.9,
+    "count": 90,
+    "cat": "Accessories"
+  },
+  {
+    "name": "Wilson Evolution Basketball",
+    "price": 69,
+    "description": "Premium indoor basketball with superior grip and feel.",
+    "url": "https://example.com/images/wilsonevolution.jpg",
+    "stars": 4.8,
+    "count": 50,
+    "cat": "Sports"
+  }
+]
