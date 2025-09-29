@@ -5,7 +5,8 @@ import { FaTruck, FaMoneyBill, FaShieldAlt, faArrow, FaArrowsAlt} from 'react-ic
 import './Details.css'
 import addToCart from './addToCart';
 import Reviews from './Reviews';
-import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts"
+import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import axios from 'axios';
 
 const Details = () => {
     const {product_Id} = useParams();
@@ -17,7 +18,7 @@ const Details = () => {
       navigate(`/rate-page/${product_Id}`);
     }
   
-
+    const user = localStorage.getItem('user');
 
     // Function to render stars
     const renderStars = (stars,count) => {
@@ -127,7 +128,8 @@ const Details = () => {
       order_id: orderData.orderId,
       handler: async function (response) {
         console.log("Payment success: ", response);
-        alert("Order placed successfully!");
+        const res = await axios.post('http://localhost:5000/order', {credential:user,product_Id});
+        alert(res.data.message);
       },
       prefill: {
         name: 'Subash',

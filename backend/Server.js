@@ -485,11 +485,11 @@ app.post('/api/auth/login',async (req,res)=>{
 });
 
 // server functionality to place order unique to each user 
-app.post('/order', userTokenAuth ,async (req,res)=>{
-    console.log('response for Data is Recieved')
-    const {data} = req.body;
-    const credential = req.user.Username;
-    const product_Id = data._id;
+app.post('/order' ,async (req,res)=>{
+    // const {data} = req.body;
+    const credential = parseInt(req.body.credential);
+    console.log({credential})
+    const product_Id = req.body.product_Id;
     if (product_Id == undefined){
         return res.status(573).json({ok:false,message:'No Product Id received !..'})
     }
@@ -504,10 +504,10 @@ app.post('/order', userTokenAuth ,async (req,res)=>{
     }
     catch(error){
         console.log('Error While Saving Data to Database : ',error);
-        return res.status(400).json({error:error});
+        return res.status(400).json({message:error});
     }
 
-    return res.status(200).json({ok:true});
+    return res.status(200).json({ok:true,message:`Data for orders ${credential} ${product_Id} is done Sucessfully`});
 });
 
 // LOGIC TO GET ORDER DETAIL 
