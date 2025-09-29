@@ -15,6 +15,7 @@
     "dotenv": "^16.4.5",
     "google-auth-library": "^9.14.1",
     "jsonwebtoken": "^9.0.2",
+    "razorpay": "^2.9.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-google-login": "^5.2.2",

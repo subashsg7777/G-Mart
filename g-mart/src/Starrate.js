@@ -41,13 +41,14 @@ const Starrate = () => {
       await addRating(product_Id, star); // Call the function
     };
 
-    const handleReview = async()=>{
+    const handleReview = async(star)=>{
+      handleRatingSubmit();
       const username = localStorage.getItem('username')
       const response = await fetch('http://localhost:5000/get-review',{
         method:"POST",
         headers:{'Content-Type':'application/json'},
         credentials:'include',
-        body:JSON.stringify({product_Id,review})
+        body:JSON.stringify({username,product_Id,review,stars})
       });
       const responseData = await response.json();
       if(responseData.ok){
@@ -90,7 +91,7 @@ const Starrate = () => {
            {[1, 2, 3, 4, 5].map((star) => (
               <button
               key={star}
-              onClick={() => {setStars(star); handleRatingSubmit(star)}}
+              onClick={() => {setStars(star);}}
               style={{
                 color: stars >= star ? 'gold' : 'gray',
                 fontSize: '24px',
@@ -105,7 +106,7 @@ const Starrate = () => {
           </section>
           <textarea placeholder=' Provide your Review Here !...' style={{height:'100px',display:'block',width:'400px',margin:'auto',borderRadius:'16px',border:'1.5px solid black'}} onChange={(e)=>{setReview(e.target.value)}}></textarea>
 
-          <button onClick={()=>{handleReview()}}>Submit</button>
+          <button onClick={()=>{handleReview( )}}>Submit</button>
       </div>
       </div>
       </>

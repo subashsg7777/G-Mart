@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./models/Users');
 const Product = require('./models/Product');
 const authRoutes = require('./routes/auth');
+const razorpayRoutes = require('./routes/razorpay');
 const { addToCart } = require('./models/Cart');
 const {Cart} = require('./models/Cart');
 const bcrypt = require('bcrypt');
@@ -14,29 +15,40 @@ const fs = require('fs');
 const path = require("path");
 const cookieParser = require('cookie-parser');
 const { ok } = require('assert');
+const Razorpay = require("razorpay");
+
+const razorpay = new Razorpay({
+  key_id: 'rzp_test_DcmxbbPTJKoZEt',
+  key_secret: 'Bavfr6Mk0j6yD2CGiBxXmvJZ',
+});
 
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT_SECRET = process.env.JWT_SECRET;
+
 
 const app = express();
 
 // Middleware
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
+app.use(cookieParser()); 
+
 const reviewsFile = path.join(__dirname, "product_reviews.json"); 
 const userTokenAuth = async (req, res, next) => {
-  const token = req.cookies.session_token;
-  if (!token) return res.status(401).json({ message: 'Unauthorized' });
+    const token = req.cookies.session_token;
+    if (!token) {
+        console.log('No session_token cookie found in request.');
+        return res.status(401).json({ message: 'Please Login' });
+    }
 
-  const user = await User.findOne({ sessionToken: token });
-  if (!user) return res.status(403).json({ message: 'Invalid session' });
+    const user = await User.findOne({ sessionToken: token });
+    if (!user) return res.status(403).json({ message: 'Invalid session' });
 
-  req.user = user; // now available in routes
-  console.log('The Logged in User : ',user)
-  next();
+    req.user = user; // now available in routes
+    console.log('The Logged in User : ',user)
+    next();
 };
-app.use(cookieParser());
 
 
 // CORS Headers
@@ -48,6 +60,7 @@ app.use((req, res, next) => {
 
 // Auth routes
 app.use(authRoutes);
+app.use(razorpayRoutes);
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/G-Mart', {
@@ -105,13 +118,14 @@ const loadReviews = () => {
 app.post('/get-review', userTokenAuth,  async (req,res)=>{
     console.log('Got it !...');
     
-    const { product_Id, review } = req.body;
+    const { product_Id, review,stars } = req.body;
     const username = req.user.Username;
-  if (!product_Id || !username || !review) {
+  if (!product_Id || !username || !review || !stars) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  let reviews = loadReviews();
+  try{
+    let reviews = loadReviews();
 
   // Check if product_Id exists
   if (!reviews[product_Id]) {
@@ -122,11 +136,16 @@ app.post('/get-review', userTokenAuth,  async (req,res)=>{
         return res.status(550).json({message:'Already Placed Your Review !...',ok:false})
     }
   // Append or update the review for the given username
-  reviews[product_Id][username] = {"review":review,"Date": new Date()}
+  reviews[product_Id][username] = {"review":review,"Date": new Date(),"stars":stars}
 
   saveReviews(reviews);
 
   res.json({ message: "Review submitted successfully" , ok:true});
+  }
+
+  catch(error){
+    console.error(error);
+  }
 });
 
 app.get('/Your-Product', userTokenAuth , async (req,res)=>{
@@ -307,30 +326,36 @@ app.delete('/api/cartdelete',async (req,res)=>{
 app.post('/api/addcart',authRoutes,addToCart);
 
 // Star rating feature 
-app.post('/rate-product/:productId', async (req,res)=>{
-    const {star}= req.body;
-    const {productId} = req.params;
-    try{
+app.post('/rate-product/:productId', async (req, res) => {
+    const { star } = req.body;
+    const { productId } = req.params;
+    try {
         const search = await Product.findById(productId);
-        console.log('The Search values : ',search);
-        if (!search){
-            return res.status(400).json({message:"No product found"});
+        console.log('The Search values : ', search);
+        if (!search) {
+            return res.status(400).json({ message: "No product found" });
+        }
+
+        // Ensure stars and count are numbers
+        if (typeof search.stars !== 'number') search.stars = 0;
+        if (typeof search.count !== 'number') search.count = 0;
+
+        // Ensure vendor is present
+        if (!search.vendor) {
+            return res.status(500).json({ message: "Product is missing vendor field. Please fix the product data in the database." });
         }
 
         search.stars += star;
         search.count += 1;
 
-        // saving the databse
         await search.save();
 
-        const avgstar = search.star / search.count;
-        console.log("AVG star : ",avgstar);
-        return res.status(200).json({message:"Your Rating are SAved !.."});
-    }
-
-    catch(error){
-        console.log("Error while Accessing database !..",error);
-        return res.status(400).json({message:'Error while accessing database !...'});
+        const avgStars = search.stars / search.count;
+        console.log("AVG star : ", avgStars);
+        return res.status(200).json({ message: "Your Rating are Saved !..", avgStars });
+    } catch (error) {
+        console.log("Error while Accessing database !..", error);
+        return res.status(400).json({ message: 'Error while accessing database !...' });
     }
 });
 
@@ -504,7 +529,7 @@ app.post('/order-details',async (req,res)=>{
 app.post('/order-products', async (req,res)=>{
 
     const {product_Id} = req.body;
-    console.log("Product ID's for Deatails retrival : ",product_Id)
+    console.log("Product ID's for Details retrival : ",product_Id)
 
     const search = await Product.find({ _id: { $in: product_Id } });
     if(!search){

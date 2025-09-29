@@ -91,7 +91,69 @@ const Details = () => {
         
         handleDataRetrival();
       }, []);
+
+
+  const handlePayment = async () => {
+    const loaded = await loadRazorpayScript();
+    if (!loaded || !window.Razorpay) {
+      alert('Razorpay SDK failed to load.');
+      return;
+    }
+
+    // Fetch order from backend
+    let orderData;
+    try {
+      const res = await fetch('http://localhost:5000/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: data.price * 100, currency: 'INR' })
+      });
+      orderData = await res.json();
+      if (!orderData.orderId) {
+        alert('Failed to create order.');
+        return;
+      }
+    } catch (err) {
+      alert('Failed to create order.');
+      return;
+    }
+
+    const options = {
+      key: 'rzp_test_DcmxbbPTJKoZEt',
+      amount: orderData.amount, // Razorpay expects amount in paise
+      currency: orderData.currency,
+      name: 'Bolt & Brook',
+      description: 'Test Payment',
+      order_id: orderData.orderId,
+      handler: async function (response) {
+        console.log("Payment success: ", response);
+        alert("Order placed successfully!");
+      },
+      prefill: {
+        name: 'Subash',
+        email: 'subash@example.com',
+        contact: '7449242397',
+      },
+      theme: {
+        color: '#000000',
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
     
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
       return data ? (
         <div style={{marginTop:'150px'}}>
           <img src={data.url} alt={data.name} className='' id='image'/>
@@ -101,7 +163,7 @@ const Details = () => {
               <br />
               <h4 className='new-font font-extrabold text-2xl text-blue-600 flex justify-center'>&#x20B9;. {data.price}</h4>
               <br />
-              <div className='flex items-center mt-2 flex justify-center mb-4' style={{fontSize:'25px'}}>
+              <div className='flex items-center mt-2 justify-center mb-4' style={{fontSize:'25px'}}>
                   {renderStars(data.stars,data.count)}
                 </div>
               <p className='new-font font-extrabold flex justify-center mt-[10px]'>Delivered to the location - {gps}</p>
@@ -148,6 +210,7 @@ const Details = () => {
               <button className='text-white p-2 new-font rounded-2xl mt-3' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={handleOrder}>Buy Now !..</button>
               <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();addToCart(data);}}>Add to Cart</button>
               <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();handlePassing(data._id)}}>Rate This Product</button>
+              <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();handlePayment()}}>Pay with {data.price}</button>
           </div>
             <Reviews product_Id={product_Id} />
         </div>
@@ -155,6 +218,7 @@ const Details = () => {
         <p>Loading...</p>
       );
       
-}
+
+    }
 
 export default Details
