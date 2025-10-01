@@ -1,0 +1,23 @@
+.text-type {
+  display: inline-block;
+  white-space: pre-wrap;
+  padding-top: 45%;
+}
+
+.text-type__cursor {
+    font-size: 4rem;
+  margin-left: 0.25rem;
+  display: inline-block;
+  opacity: 1;
+  color: black;
+}
+
+.text-type__cursor--hidden {
+  display: none;
+}
+
+.text-type__content{
+    margin: auto;
+    font-weight: 600;
+     font-size: 5rem;
+}

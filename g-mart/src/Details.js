@@ -123,7 +123,7 @@ const Details = () => {
       key: 'rzp_test_DcmxbbPTJKoZEt',
       amount: orderData.amount, // Razorpay expects amount in paise
       currency: orderData.currency,
-      name: 'Bolt & Brook',
+      name: 'G-Mart',
       description: 'Test Payment',
       order_id: orderData.orderId,
       handler: async function (response) {
@@ -137,7 +137,7 @@ const Details = () => {
         contact: '7449242397',
       },
       theme: {
-        color: '#000000',
+        color: '#ADD8E6',
       },
     };
 

@@ -7,6 +7,9 @@ import Images from './Images';
 import InfiniteCarousel from './InfiniteCarousel';
 import Footer from './Footer';
 import { useNavigate } from 'react-router-dom';
+import ScrollFloat from "./ScrollFloat";
+import Continue from './Continue';
+import TextType from './TextType';
 
 const Home = () => {
     // navigation hook
@@ -48,6 +51,25 @@ const Home = () => {
   <Card />
   <Carousal />
   <Images />
+  <div style={{display:'flex',width:'100vw'}}>
+    {/* <ScrollFloat 
+  animationDuration={1}
+  ease='back.inOut(2)'
+  scrollStart='center bottom+=50%'
+  scrollEnd='bottom bottom-=40%'
+  stagger={0.03}
+  > Don’t let your favorites slip away</ScrollFloat> */}
+      <div style={{width:'100%'}}>
+        <TextType 
+  text={["\"Don’t let your favorites slip away\""]}
+  typingSpeed={50}
+  pauseDuration={1500}
+  showCursor={true}
+  cursorCharacter="|"
+/>
+      </div>
+  <Continue />
+  </div>
   <InfiniteCarousel />
   <Footer />
 </>
