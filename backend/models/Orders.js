@@ -11,6 +11,12 @@ const OrdersSchema = new mongoose.Schema({
     },
     location:{
         type:String,
+    credential:{
+        type: String,
+        required:false  
+    },
+    product_Id:{
+        type: Array,
         required:false
     }
 });
