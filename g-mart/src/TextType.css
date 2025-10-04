@@ -16,8 +16,24 @@
   display: none;
 }
 
+
+
+.comic-relief-regular {
+  font-family: "Comic Neue", system-ui !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
+.comic-relief-bold {
+  font-family: "Comic Neue", system-ui;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
 .text-type__content{
-    margin: auto;
-    font-weight: 600;
-     font-size: 5rem;
+  margin: auto;
+  font-weight: 600;
+  font-size: 5rem;
+  font-family: "Comic Neue", system-ui !important;
 }

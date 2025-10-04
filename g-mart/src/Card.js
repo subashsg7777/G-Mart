@@ -14,8 +14,8 @@ const Card = () => {
             marginTop:'100px',
             boxshadow: ' 0 4px 6px rgba(0, 0, 0, 0.9), 0 2px 4px rgba(0, 0, 0, 0.9)',
             borderradius:' 0.5rem',
-            padding: '1rem'
-            
+            padding: '1rem',
+            background:'linear-gradient(45deg, rgba(72, 70, 184, 0.82) 0%, rgba(69, 71, 143, 0.7) 63%, rgba(83, 198, 237, 1) 100%)'
         },
     };
 

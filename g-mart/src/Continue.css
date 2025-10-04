@@ -8,6 +8,19 @@
     height: 100%;
 }
 
+.comic-relief-regular {
+  font-family: "Comic Relief", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.comic-relief-bold {
+  font-family: "Comic Relief", system-ui;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
 .div1 {
     grid-column: span 3 / span 3;
     grid-row: span 3 / span 3;

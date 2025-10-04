@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router-dom';
 import ScrollFloat from "./ScrollFloat";
 import Continue from './Continue';
 import TextType from './TextType';
+import Discount3D from './Discount3D';
+import Cart3D from './Cart3D';
 
 const Home = () => {
     // navigation hook
@@ -49,9 +51,7 @@ const Home = () => {
   <Offer />
   <Navbar />
   <Card />
-  <Carousal />
-  <Images />
-  <div style={{display:'flex',width:'100vw'}}>
+  <div style={{display:'flex',width:'100vw',margin:'60px'}}>
     {/* <ScrollFloat 
   animationDuration={1}
   ease='back.inOut(2)'
@@ -59,17 +59,22 @@ const Home = () => {
   scrollEnd='bottom bottom-=40%'
   stagger={0.03}
   > Don’t let your favorites slip away</ScrollFloat> */}
-      <div style={{width:'100%'}}>
+      <div style={{width:'100%',marginTop:'-10%'}}>
         <TextType 
-  text={["\"Don’t let your favorites slip away\""]}
+  text={["\"Checkout the Amazing Discounts Right Now!\""]}
   typingSpeed={50}
   pauseDuration={1500}
   showCursor={true}
   cursorCharacter="|"
 />
+
+
       </div>
-  <Continue />
+      
+     <Continue />
   </div>
+  <Carousal />
+  <Images />
   <InfiniteCarousel />
   <Footer />
 </>
