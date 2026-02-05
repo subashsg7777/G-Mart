@@ -62,6 +62,12 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use(razorpayRoutes);
 
+// Smart Search routes
+const smartSearchRoutes = require('./routes/smartSearch');
+const smartSearchEnhanced = require('./routes/smartSearchEnhanced');
+app.use('/api', smartSearchRoutes);
+app.use('/api/search', smartSearchEnhanced);
+
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/G-Mart', {
     useNewUrlParser: true,
@@ -121,6 +127,8 @@ app.post('/get-review', userTokenAuth,  async (req,res)=>{
     const { product_Id, review,stars } = req.body;
     const username = req.user.Username;
   if (!product_Id || !username || !review || !stars) {
+    console.log(product_Id," ",username," ",review," ",stars);
+    
     return res.status(400).json({ message: "All fields are required" });
   }
 
