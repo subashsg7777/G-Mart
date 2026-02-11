@@ -28,6 +28,37 @@ const productSchema = new mongoose.Schema({
         required:false
     },
 
+    // New fields
+    brand: {
+        type: String,
+        required: false
+    },
+
+    variant: {
+        type: Object,
+        required: false
+    },
+
+    discount: {
+        type: Number,
+        required: false
+    },
+
+    rating: {
+        type: Number,
+        required: false
+    },
+
+    colour: {
+        type: String,
+        required: false
+    },
+
+    reviews: {
+        type: Number,
+        required: false
+    },
+
     cat:{
         type:String,
         required:true
@@ -49,6 +80,6 @@ const productSchema = new mongoose.Schema({
     }
 });
 // Create text index for search
-productSchema.index({ name: 'text', description: 'text', cat: 'text' });
+productSchema.index({ name: 'text', description: 'text', cat: 'text', colour: 'text' });
 const Product = mongoose.model('Product',productSchema);
 module.exports = Product;

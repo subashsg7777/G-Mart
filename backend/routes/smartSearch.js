@@ -44,7 +44,8 @@ router.post('/search', async (req, res) => {
       filters.$or = [
         { name: { $regex: query, $options: 'i' } },
         { description: { $regex: query, $options: 'i' } },
-        { cat: { $regex: query, $options: 'i' } }
+        { cat: { $regex: query, $options: 'i' } },
+        { colour: { $regex: query, $options: 'i' } }
       ];
     }
 
@@ -53,7 +54,7 @@ router.post('/search', async (req, res) => {
     // Find products in database
     console.log('4. Querying MongoDB...');
     const products = await Product.find(filters)
-      .select('_id name price stars count cat vendor description')
+      .select('_id name price stars count cat vendor description colour')
       .limit(limit)
       .lean();
 
@@ -120,6 +121,7 @@ router.post('/search', async (req, res) => {
       reviews: ranked.totalReviews,
       category: ranked.originalProduct?.cat || 'Unknown',
       vendor: ranked.originalProduct?.vendor || 'Unknown',
+      colour: ranked.originalProduct?.colour || 'Not specified',
       rankingScore: ranked.rankingScore ? parseFloat(ranked.rankingScore.toFixed(3)) : 0,
       valueScore: ranked.valueScore ? parseFloat(ranked.valueScore.toFixed(3)) : 0,
       whyRecommended: ranked.whyRecommended || 'Matches your criteria'

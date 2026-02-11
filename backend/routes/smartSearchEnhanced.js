@@ -56,6 +56,23 @@ router.post('/natural', async (req, res) => {
       filters.cat = { $regex: actualCategory, $options: 'i' };
     }
 
+    // Brands filter (if provided)
+    if (parsedQuery.brands && parsedQuery.brands.length > 0) {
+      filters.brand = { $in: parsedQuery.brands };
+    }
+
+    // Variant filters (color/capacity)
+    if (parsedQuery.variants && Object.keys(parsedQuery.variants).length > 0) {
+      // We store variant as object in product.variant; use $elemMatch-like matching
+      const v = parsedQuery.variants;
+      if (v.color) {
+        filters['variant.color'] = { $regex: `^${v.color}$`, $options: 'i' };
+      }
+      if (v.capacity) {
+        filters['variant.capacity'] = { $regex: `^${v.capacity}$`, $options: 'i' };
+      }
+    }
+
     // Step 3: Fetch products from database (without budget filter first)
     console.log(`✓ Using filters: ${JSON.stringify(filters)}`);
     let products = await Product.find(filters).lean();
@@ -76,6 +93,15 @@ router.post('/natural', async (req, res) => {
       }
     }
 
+    // If brand reputation is required for ML ranking, fetch reputations and attach to products
+    const BrandReputation = require('../models/BrandReputation');
+    const brandNames = Array.from(new Set(products.map(p => p.brand).filter(Boolean)));
+    let brandMap = {};
+    if (brandNames.length > 0) {
+      const reps = await BrandReputation.find({ brand: { $in: brandNames } }).lean();
+      for (const r of reps) brandMap[r.brand] = r.reputationScore;
+    }
+
     // Step 4: Apply sorting based on user intent
     products = applyIntelligentSort(products, parsedQuery.sortBy);
     console.log(`✓ Sorted by: ${parsedQuery.sortBy}`);
@@ -84,10 +110,15 @@ router.post('/natural', async (req, res) => {
     let rankedProducts = products;
     if (RANKING_ENABLED && products.length > 0) {
       try {
-        rankedProducts = await rankProductsML(products, searchText);
+        // attach brand reputation score if available
+        const productsForML = products.map(p => ({
+          ...p,
+          brandReputationScore: brandMap[p.brand] ?? 5.0
+        }));
+        rankedProducts = await rankProductsML(productsForML, searchText);
         console.log(`✓ ML ranking applied`);
       } catch (mlError) {
-        console.log(`⚠️ ML ranking failed, using basic sorting`);
+        console.log(`⚠️ ML ranking failed, using basic sorting`, mlError.message);
       }
     }
 
@@ -211,16 +242,16 @@ async function rankProductsML(products, query) {
   try {
     // Get budget from query parser to pass to ML model
     const parsedQuery = queryParser.parse(query);
-    
+
     const response = await axios.post(`${RANKING_API_URL}/rank`, {
       products: products.map(p => ({
         productId: (p._id || p.id).toString(),
         productName: p.name || '',
         price: p.price || 0,
         discountPercentage: p.discount || 0,
-        averageRating: p.rating || 0,
-        brandReputationScore: p.brandReputation || 5,
-        totalReviews: p.reviews || 0,
+        averageRating: p.rating || p.stars || 0,
+        brandReputationScore: p.brandReputationScore ?? (p.brandReputation || 5),
+        totalReviews: p.reviews || p.count || 0,
         budgetMin: parsedQuery.budgetMin || 0,
         budgetMax: parsedQuery.budgetMax || 100000
       }))

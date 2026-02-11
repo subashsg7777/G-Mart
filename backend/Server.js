@@ -65,8 +65,10 @@ app.use(razorpayRoutes);
 // Smart Search routes
 const smartSearchRoutes = require('./routes/smartSearch');
 const smartSearchEnhanced = require('./routes/smartSearchEnhanced');
+const filterRoutes = require('./routes/filters');
 app.use('/api', smartSearchRoutes);
 app.use('/api/search', smartSearchEnhanced);
+app.use('/api/filters', filterRoutes);
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/G-Mart', {
@@ -405,7 +407,6 @@ app.post('/catagory',async (req,res)=>{
         console.log("The particualar Catagory has no items !..");
         return res.status(404).json({message:'The particualar Catagory has no items !..'});
     }
-    console.log("Catagory Data : ",search);
     return res.status(200).json({ok: true,data:search});
 });
 

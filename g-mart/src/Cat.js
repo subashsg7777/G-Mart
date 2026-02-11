@@ -2,36 +2,83 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { AiFillStar,AiOutlineStar } from 'react-icons/ai';
 import addToCart from './addToCart';
+import SmartSearchFilter from './SmartSearchFilter';
 import "./static/output.css"
 
 const Cat = () => {
   // catagory data from hero section 
   const {cat} = useParams();
   const [data,setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [appliedFilters, setAppliedFilters] = useState(null);
+  const [showFilters, setShowFilters] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    const handledataRetrival = async ()  =>{
+  const handleDataRetrival = async ()  =>{
+    setLoading(true);
+    try {
       const retrival  = await fetch('http://localhost:5000/catagory',{
         method:'POST',
         headers:{'content-type':'application/json'},
         body:JSON.stringify({cat:cat})
       });
-  
+
       // execution after data retrival 
       if(retrival.ok){
         const data = await retrival.json();
         console.log("Cat data : ",data.data);
         setData(data.data);
       }
-  
+
       else{
         alert('Data retrival process is failed in frontend !..');
+        setData([]);
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    handledataRetrival();
-  },[]);
+  // Apply filters for this fixed category
+  const handleFiltersApply = async (filters) => {
+    setAppliedFilters(filters);
+    setLoading(true);
+    try {
+      const response = await fetch('http://localhost:5000/api/filters/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...filters,
+          categories: [cat]
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setData(data.products || []);
+      } else {
+        setData([]);
+      }
+    } catch (error) {
+      console.error('Filter search error:', error);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFiltersClear = async () => {
+    setAppliedFilters(null);
+    await handleDataRetrival();
+  };
+
+  useEffect(()=>{
+    setAppliedFilters(null);
+    handleDataRetrival();
+  },[cat]);
   
 
 // Function to render stars
@@ -52,6 +99,60 @@ const renderStars = (stars) => {
   return data ? (
     <>
     <h1 className='text-2xl new-font font-extrabold mt-[150px] mb-6 ml-2' >{cat} ({data.length}) : </h1>
+
+    <div className='ml-2' style={{ marginBottom: '12px' }}>
+      <button
+        onClick={() => setShowFilters(!showFilters)}
+        style={{
+          backgroundColor: '#1A4CA6',
+          color: 'white',
+          border: 'none',
+          padding: '10px 16px',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          fontWeight: '600'
+        }}
+      >
+        {showFilters ? 'Hide Filters' : 'Show Filters'}
+      </button>
+    </div>
+
+    {showFilters && (
+      <div className='m-2'>
+        <SmartSearchFilter
+          fixedCategories={[cat]}
+          hideCategory={true}
+          compact={true}
+          onFiltersApply={handleFiltersApply}
+          onFiltersClear={handleFiltersClear}
+        />
+      </div>
+    )}
+
+    {appliedFilters && (
+      <div className='m-2' style={{
+        backgroundColor: '#fff7e6',
+        border: '1px solid #1A4CA6',
+        padding: '12px',
+        borderRadius: '8px',
+        marginBottom: '16px'
+      }}>
+        <p style={{ margin: '4px 0', fontSize: '14px', color: '#333' }}>
+          <strong>🧰 Filters Applied:</strong>
+          {' '}Brands: <span style={{ color: '#1A4CA6', fontWeight: 'bold' }}>{appliedFilters.brands?.length ? appliedFilters.brands.join(', ') : 'All'}</span>
+          {' | '}Colors: <span style={{ color: '#1A4CA6', fontWeight: 'bold' }}>{appliedFilters.colors?.length ? appliedFilters.colors.join(', ') : 'All'}</span>
+          {' | '}Price: ₹{(appliedFilters.minPrice ?? 0).toLocaleString()}-₹{(appliedFilters.maxPrice ?? 0).toLocaleString()}
+          {' | '}Rating: <span style={{ color: '#1A4CA6', fontWeight: 'bold' }}>{appliedFilters.minRating ? `${appliedFilters.minRating}+` : 'All'}</span>
+          {' | '}Sort: <span style={{ color: '#1A4CA6', fontWeight: 'bold' }}>{appliedFilters.sortBy}</span>
+        </p>
+      </div>
+    )}
+
+    {loading && (
+      <div className='m-2'>
+        <p>Loading...</p>
+      </div>
+    )}
     {data.map((mdata, index) => (
   <div
     key={index} // Use a unique key for each item

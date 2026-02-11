@@ -25,6 +25,8 @@ const Details = () => {
     // Function to render stars
     const renderStars = (stars,count) => {
       const avg = Math.floor(stars /count);
+      console.log("Average Star Review : ",avg);
+      
       const maxStars = 5;
       if(avg > 0){
         const filledStars = Array(avg).fill(<AiFillStar className="text-yellow-500" style={{display:'inline'}}/>);

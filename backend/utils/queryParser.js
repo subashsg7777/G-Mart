@@ -101,6 +101,33 @@ const queryParser = {
   },
 
   /**
+   * Extract brand mentions from text (simple approach using known brand list)
+   */
+  extractBrands: (text) => {
+    const knownBrands = ['Nike','Adidas','Puma','Reebok','Asics','New Balance','Apple','Samsung','OnePlus','Dell','HP','Lenovo','Sony','Bose','Canon','Nikon','JBL','Logitech','Razer','Corsair'];
+    const found = [];
+    for (const b of knownBrands) {
+      const re = new RegExp('\\b' + b.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '\\b','i');
+      if (re.test(text)) found.push(b);
+    }
+    return found; // array of brands (may be empty)
+  },
+
+  /**
+   * Extract simple variant info like colors or capacities (e.g., 128gb, blue)
+   */
+  extractVariants: (text) => {
+    const variants = {};
+    // color
+    const colorMatch = text.match(/\b(black|white|red|blue|green|yellow|pink|grey|gray)\b/i);
+    if (colorMatch) variants.color = colorMatch[1].toLowerCase();
+    // capacity
+    const capMatch = text.match(/(\d{2,4})\s*(gb|mb|tb)\b/i);
+    if (capMatch) variants.capacity = `${capMatch[1]}${capMatch[2].toLowerCase()}`;
+    return variants;
+  },
+
+  /**
    * Detect user intent from search text
    */
   detectIntent: (text) => {
@@ -148,6 +175,8 @@ const queryParser = {
 
     const query = queryParser.extractCategory(searchText);
     const { budgetMin, budgetMax } = queryParser.extractBudget(searchText);
+    const brands = queryParser.extractBrands(searchText);
+    const variants = queryParser.extractVariants(searchText);
     const intent = queryParser.detectIntent(searchText);
     const sortBy = queryParser.determineSortBy(intent);
 
@@ -155,6 +184,8 @@ const queryParser = {
       query,
       budgetMin,
       budgetMax,
+      brands,
+      variants,
       intent,
       sortBy,
     };
