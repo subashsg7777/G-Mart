@@ -8,6 +8,15 @@ const axios = require('axios');
 const RANKING_API_URL = process.env.RANKING_API_URL || 'http://localhost:8000';
 const RANKING_ENABLED = process.env.RANKING_ENABLED !== 'false';
 
+// Configuration for AI Query Parser (trained model)
+// Note: read env at request-time so you can toggle without restarting (when using process manager)
+function getAiParserConfig() {
+  return {
+    url: process.env.AI_PARSER_URL || 'http://127.0.0.1:8010',
+    enabled: String(process.env.AI_PARSER_ENABLED).toLowerCase() === 'true'
+  };
+}
+
 /**
  * Natural Language Search - Parse raw search text and return results
  * POST /api/search/natural
@@ -29,7 +38,23 @@ router.post('/natural', async (req, res) => {
     console.log(`\n🔍 NATURAL SEARCH: "${searchText}"`);
 
     // Step 1: Parse the natural language text
-    const parsedQuery = queryParser.parse(searchText);
+    const aiCfg = getAiParserConfig();
+    let parsedQuery = null;
+    let parserSource = 'rule-parser';
+    if (aiCfg.enabled) {
+      try {
+        const aiResp = await axios.post(`${aiCfg.url}/parse`, { searchText }, { timeout: 4000 });
+        parsedQuery = aiResp.data;
+        parserSource = 'ai-parser';
+        console.log(`✓ AI Parsed: ${JSON.stringify(parsedQuery)}`);
+      } catch (aiErr) {
+        console.log(`⚠️ AI parser unavailable, falling back to rule parser: ${aiErr.message}`);
+      }
+    }
+
+    if (!parsedQuery) {
+      parsedQuery = queryParser.parse(searchText);
+    }
     console.log(`✓ Parsed: ${JSON.stringify(parsedQuery)}`);
 
     // Step 2: Build MongoDB filters
@@ -125,6 +150,8 @@ router.post('/natural', async (req, res) => {
     const result = {
       success: true,
       searchText,
+      parserSource,
+      ai: { enabled: aiCfg.enabled, url: aiCfg.url },
       parsed: parsedQuery,
       totalProducts: rankedProducts.length,
       products: rankedProducts.slice(0, 50) // Return top 50

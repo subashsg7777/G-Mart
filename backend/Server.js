@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { OAuth2Client } = require('google-auth-library');
@@ -66,9 +67,11 @@ app.use(razorpayRoutes);
 const smartSearchRoutes = require('./routes/smartSearch');
 const smartSearchEnhanced = require('./routes/smartSearchEnhanced');
 const filterRoutes = require('./routes/filters');
+const smartSearchAIParser = require('./routes/smartSearchAIParser');
 app.use('/api', smartSearchRoutes);
 app.use('/api/search', smartSearchEnhanced);
 app.use('/api/filters', filterRoutes);
+app.use('/api', smartSearchAIParser);
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/G-Mart', {

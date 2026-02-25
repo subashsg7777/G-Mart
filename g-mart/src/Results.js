@@ -197,6 +197,7 @@ const handleSearch = async (term) => {
             <SmartSearchFilter
               onFiltersApply={handleFiltersApply}
               onFiltersClear={handleFiltersClear}
+              compact={true}
             />
           </div>
         )}

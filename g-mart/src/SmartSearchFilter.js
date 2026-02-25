@@ -85,6 +85,14 @@ const SmartSearchFilter = ({
     }));
   };
 
+  const handleCategorySelect = (category) => {
+    if (Array.isArray(fixedCategories)) return;
+    setFilters(prev => ({
+      ...prev,
+      categories: category ? [category] : []
+    }));
+  };
+
   const handleBrandChange = (brand) => {
     setFilters(prev => ({
       ...prev,
@@ -124,10 +132,10 @@ const SmartSearchFilter = ({
     }));
   };
 
-  const handleRatingChange = (rating) => {
+  const handleRatingSelect = (rating) => {
     setFilters(prev => ({
       ...prev,
-      minRating: prev.minRating === rating ? 0 : rating
+      minRating: rating
     }));
   };
 
@@ -186,6 +194,7 @@ const SmartSearchFilter = ({
   if (compact) {
     const selectedBrand = filters.brands?.[0] || '';
     const selectedColor = filters.colors?.[0] || '';
+    const selectedCategory = filters.categories?.[0] || '';
 
     return (
       <div className="smart-filter-container smart-filter-compact">
@@ -199,6 +208,21 @@ const SmartSearchFilter = ({
               onChange={(e) => handleSearchChange(e.target.value)}
             />
           </div>
+
+          {!hideCategory && !Array.isArray(fixedCategories) && (
+            <div className="compact-item">
+              <select
+                className="compact-select"
+                value={selectedCategory}
+                onChange={(e) => handleCategorySelect(e.target.value)}
+              >
+                <option value="">All Categories</option>
+                {availableFilters.categories.map(c => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div className="compact-item">
             <select
@@ -252,7 +276,7 @@ const SmartSearchFilter = ({
             <select
               className="compact-select"
               value={filters.minRating}
-              onChange={(e) => handleRatingChange(parseInt(e.target.value, 10) || 0)}
+              onChange={(e) => handleRatingSelect(parseInt(e.target.value, 10) || 0)}
             >
               <option value={0}>All Ratings</option>
               {availableFilters.ratings.map(r => (
@@ -322,21 +346,16 @@ const SmartSearchFilter = ({
           </div>
           {expandedSections.category && (
             <div className="section-content">
-              <div className="checkbox-group">
-                {availableFilters.categories.slice(0, 8).map(category => (
-                  <label key={category} className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      checked={filters.categories.includes(category)}
-                      onChange={() => handleCategoryChange(category)}
-                    />
-                    <span>{category}</span>
-                  </label>
+              <select
+                className="search-input"
+                value={filters.categories?.[0] || ''}
+                onChange={(e) => handleCategorySelect(e.target.value)}
+              >
+                <option value="">All Categories</option>
+                {availableFilters.categories.map(category => (
+                  <option key={category} value={category}>{category}</option>
                 ))}
-                {availableFilters.categories.length > 8 && (
-                  <p className="more-text">+{availableFilters.categories.length - 8} more</p>
-                )}
-              </div>
+              </select>
             </div>
           )}
         </div>
@@ -351,21 +370,16 @@ const SmartSearchFilter = ({
           </div>
           {expandedSections.brand && (
             <div className="section-content">
-              <div className="checkbox-group">
-                {availableFilters.brands.slice(0, 8).map(brand => (
-                  <label key={brand} className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      checked={filters.brands.includes(brand)}
-                      onChange={() => handleBrandChange(brand)}
-                    />
-                    <span>{brand}</span>
-                  </label>
+              <select
+                className="search-input"
+                value={filters.brands?.[0] || ''}
+                onChange={(e) => handleBrandSelect(e.target.value)}
+              >
+                <option value="">All Brands</option>
+                {availableFilters.brands.map(brand => (
+                  <option key={brand} value={brand}>{brand}</option>
                 ))}
-                {availableFilters.brands.length > 8 && (
-                  <p className="more-text">+{availableFilters.brands.length - 8} more</p>
-                )}
-              </div>
+              </select>
             </div>
           )}
         </div>
@@ -380,18 +394,16 @@ const SmartSearchFilter = ({
           </div>
           {expandedSections.color && (
             <div className="section-content">
-              <div className="color-grid">
+              <select
+                className="search-input"
+                value={filters.colors?.[0] || ''}
+                onChange={(e) => handleColorSelect(e.target.value)}
+              >
+                <option value="">All Colors</option>
                 {availableFilters.colors.map(color => (
-                  <label key={color} className="color-option">
-                    <input
-                      type="checkbox"
-                      checked={filters.colors.includes(color)}
-                      onChange={() => handleColorChange(color)}
-                    />
-                    <span className="color-label">{color}</span>
-                  </label>
+                  <option key={color} value={color}>{color}</option>
                 ))}
-              </div>
+              </select>
             </div>
           )}
         </div>
@@ -444,28 +456,16 @@ const SmartSearchFilter = ({
         </div>
         {expandedSections.rating && (
           <div className="section-content">
-            <div className="rating-group">
-              <label className="radio-label">
-                <input
-                  type="radio"
-                  name="rating"
-                  checked={filters.minRating === 0}
-                  onChange={() => handleRatingChange(0)}
-                />
-                <span>All Ratings</span>
-              </label>
+            <select
+              className="search-input"
+              value={filters.minRating}
+              onChange={(e) => handleRatingSelect(parseInt(e.target.value, 10) || 0)}
+            >
+              <option value={0}>All Ratings</option>
               {availableFilters.ratings.map(rating => (
-                <label key={rating} className="radio-label">
-                  <input
-                    type="radio"
-                    name="rating"
-                    checked={filters.minRating === rating}
-                    onChange={() => handleRatingChange(rating)}
-                  />
-                  <span>⭐ {rating} & above</span>
-                </label>
+                <option key={rating} value={rating}>{rating}+ ⭐</option>
               ))}
-            </div>
+            </select>
           </div>
         )}
       </div>
@@ -478,19 +478,15 @@ const SmartSearchFilter = ({
         </div>
         {expandedSections.sort && (
           <div className="section-content">
-            <div className="sort-group">
+            <select
+              className="search-input"
+              value={filters.sortBy}
+              onChange={(e) => handleSortChange(e.target.value)}
+            >
               {availableFilters.sortOptions.map(option => (
-                <label key={option.value} className="radio-label">
-                  <input
-                    type="radio"
-                    name="sort"
-                    checked={filters.sortBy === option.value}
-                    onChange={() => handleSortChange(option.value)}
-                  />
-                  <span>{option.label}</span>
-                </label>
+                <option key={option.value} value={option.value}>{option.label}</option>
               ))}
-            </div>
+            </select>
           </div>
         )}
       </div>
