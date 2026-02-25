@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { OAuth2Client } = require('google-auth-library');
@@ -395,6 +396,16 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use(razorpayRoutes);
 
+// Smart Search routes
+const smartSearchRoutes = require('./routes/smartSearch');
+const smartSearchEnhanced = require('./routes/smartSearchEnhanced');
+const filterRoutes = require('./routes/filters');
+const smartSearchAIParser = require('./routes/smartSearchAIParser');
+app.use('/api', smartSearchRoutes);
+app.use('/api/search', smartSearchEnhanced);
+app.use('/api/filters', filterRoutes);
+app.use('/api', smartSearchAIParser);
+
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/G-Mart', {
     useNewUrlParser: true,
@@ -454,6 +465,8 @@ app.post('/get-review', userTokenAuth,  async (req,res)=>{
     const { product_Id, review,stars } = req.body;
     const username = req.user.Username;
   if (!product_Id || !username || !review || !stars) {
+    console.log(product_Id," ",username," ",review," ",stars);
+    
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -730,7 +743,6 @@ app.post('/catagory',async (req,res)=>{
         console.log("The particualar Catagory has no items !..");
         return res.status(404).json({message:'The particualar Catagory has no items !..'});
     }
-    console.log("Catagory Data : ",search);
     return res.status(200).json({ok: true,data:search});
 });
 

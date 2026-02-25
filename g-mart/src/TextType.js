@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, createElement, useMemo, useCallback } from 'react';
 import { gsap } from 'gsap';
 import './TextType.css';
+import Cart3D from './Cart3D';
 
 const TextType = ({
   text,
@@ -18,7 +19,7 @@ const TextType = ({
   cursorCharacter = '|',
   cursorClassName = '',
   cursorBlinkDuration = 0.5,
-  textColors = ['#003366'],
+  textColors = ['#3B014C'],
   variableSpeed,
   onSentenceComplete,
   startOnVisible = false,
@@ -156,13 +157,13 @@ const TextType = ({
       className: `text-type ${className}`,
       ...props
     },
-    <span className="text-type__content" style={{ color: getCurrentTextColor() }}>
+    <><Cart3D /><span className={"text-type__content comic-relief-regular"} style={{ color: getCurrentTextColor() }}>
       {displayedText}
-    </span>,
+    </span></>,
     showCursor && (
       <span
         ref={cursorRef}
-        className={`text-type__cursor ${cursorClassName} ${shouldHideCursor ? 'text-type__cursor--hidden' : ''}`}
+        className={`text-type__cursor ${cursorClassName} ${shouldHideCursor ? 'text-type__cursor--hidden comic-relief-regular' : 'comic-relief-regular'}`}
       >
         {cursorCharacter}
       </span>

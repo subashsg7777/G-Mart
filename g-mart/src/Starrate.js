@@ -1,210 +1,165 @@
-import React from 'react'
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import './static/output.css'
-const Starrate = () => {
+import React, { useState } from 'react';
+import './static/output.css';
+import { useParams } from 'react-router-dom';
+
+const Starrate = ({ product_id, onClose }) => {
   const {product_Id} = useParams();
-    const [stars, setStars] = useState(0); // State for selected star value
-    const navigate = useNavigate();
-
-    const addRating = async (productId, star) => {
-      console.log('The Value inside rating function ',star)
-        try {
-          const response = await fetch(`http://localhost:5000/rate-product/${productId}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ star }), // Send the stars value
-          });
-      
-          if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Error adding rating:', errorData.message);
-            return;
-          }
-      
-          const data = await response.json();
-          console.log('Rating added successfully:', data.avgStars); // Log the updated average rating
-          navigate(`/details/${productId}`);
-          alert(`Rating added! Average stars: ${data.avgStars}`);
-        } catch (error) {
-          console.error('Error adding rating:', error);
-          alert('Failed to add rating. Please try again.');
-        }
-      };
-      
-
-    const handleRatingSubmit = async (star) => {
-      console.log("Product while sending to server is  : ",star)
-      await addRating(product_Id, star); // Call the function
-    };
+  console.log({product_Id});
   
-    return (
-      // <div>
-      //   <h3>Rate this product:</h3>
-      //   <div>
-      //     {[1, 2, 3, 4, 5].map((star) => (
-      //       <button
-      //         key={star}
-      //         onClick={() => setStars(star)}
-      //         style={{
-      //           color: stars >= star ? 'gold' : 'gray',
-      //           fontSize: '24px',
-      //           cursor: 'pointer',
-      //         }}
-      //       >
-      //         ★
-      //       </button>
-      //     ))}
-      //   </div>
-      //   <button onClick={handleRatingSubmit} style={{ marginTop: '10px' }}>
-      //     Submit Rating
-      //   </button>
-      // </div>
-      <>
-      <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}>
-      <div >
-        <h2 style={{marginLeft:'28%'}} className='new-font text-2xl'>Rate This Product !...</h2>
-        <p className='new-font'>Your Ratings Helps Other Customers To Understand About the Product....</p>
-        <section style={{marginLeft:'35%'}}>
-           {[1, 2, 3, 4, 5].map((star) => (
-              <button
-              key={star}
-              onClick={() => {setStars(star); handleRatingSubmit(star)}}
-              style={{
-                color: stars >= star ? 'gold' : 'gray',
-                fontSize: '24px',
-                cursor: 'pointer',
-              }}
-            >
-              ★
-            </button>
-            
-          ))}
-          </section>
-      </div>
-      </div>
-      </>
-    );
-}
+  product_id = product_Id;
+  const [stars, setStars] = useState(0);
+  const [review, setReview] = useState('');
 
-export default Starrate
+  const addRating = async (product_Id, star) => {
+    try {
+      const response = await fetch(`http://localhost:5000/rate-product/${product_Id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ star }),
+      });
 
-import React from 'react'
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import './static/output.css'
-const Starrate = () => {
-  const {product_Id} = useParams();
-    const [stars, setStars] = useState(0); // State for selected star value
-    const [review,setReview] = useState('')
-    const navigate = useNavigate();
+      if (!response.ok) {
+        
+        const errorData = await response.json();
+        console.error('Error adding rating:', errorData.message);
+        return null;
+      }
 
-    const addRating = async (productId, star) => {
-      console.log('The Value inside rating function ',star)
-        try {
-          const response = await fetch(`http://localhost:5000/rate-product/${productId}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ star }), // Send the stars value
-          });
-      
-          if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Error adding rating:', errorData.message);
-            return;
-          }
-      
-          const data = await response.json();
-          console.log('Rating added successfully:', data.avgStars); // Log the updated average rating
-          navigate(`/details/${productId}`);
-          alert(`Rating added! Average stars: ${data.avgStars}`);
-        } catch (error) {
-          console.error('Error adding rating:', error);
-          alert('Failed to add rating. Please try again.');
-        }
-      };
-      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error adding rating:', error);
+      return null;
+    }
+  };
 
-    const handleRatingSubmit = async (star) => {
-      console.log("Product while sending to server is  : ",star)
-      await addRating(product_Id, star); // Call the function
-    };
+  const handleReview = async () => {
+    if (!product_Id) {
+      alert('Product id missing');
+      return;
+    }
 
-    const handleReview = async(star)=>{
-      handleRatingSubmit();
-      const username = localStorage.getItem('username')
-      const response = await fetch('http://localhost:5000/get-review',{
-        method:"POST",
-        headers:{'Content-Type':'application/json'},
-        credentials:'include',
-        body:JSON.stringify({username,product_Id,review,stars})
+    const ratingResult = await addRating(product_Id, stars);
+    if (!ratingResult) {
+      alert('Failed to add rating.');
+      return;
+    }
+
+    const username = localStorage.getItem('username');
+    try {
+      const response = await fetch('http://localhost:5000/get-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ username, product_Id, review, stars }),
       });
       const responseData = await response.json();
-      if(responseData.ok){
-        alert('Review Submitted !...')
-        navigate('/')
+      if (responseData.ok) {
+        alert('Review Submitted!');
+        if (onClose) onClose();
+      } else {
+        alert(responseData.message || 'Failed to submit review');
       }
-      else{
-        alert(responseData.message)
-      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to submit review');
     }
-  
-    return (
-      // <div>
-      //   <h3>Rate this product:</h3>
-      //   <div>
-      //     {[1, 2, 3, 4, 5].map((star) => (
-      //       <button
-      //         key={star}
-      //         onClick={() => setStars(star)}
-      //         style={{
-      //           color: stars >= star ? 'gold' : 'gray',
-      //           fontSize: '24px',
-      //           cursor: 'pointer',
-      //         }}
-      //       >
-      //         ★
-      //       </button>
-      //     ))}
-      //   </div>
-      //   <button onClick={handleRatingSubmit} style={{ marginTop: '10px' }}>
-      //     Submit Rating
-      //   </button>
-      // </div>
-      <>
-      <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}>
-      <div >
-        <h2 style={{marginLeft:'28%'}} className='new-font text-2xl'>Rate This Product !...</h2>
-        <p className='new-font'>Your Ratings Helps Other Customers To Understand About the Product....</p>
-        <section style={{marginLeft:'35%'}}>
-           {[1, 2, 3, 4, 5].map((star) => (
-              <button
+  };
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(0,0,0,0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 9999,
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget && onClose) onClose();
+      }}
+    >
+      <div style={{ padding: '30px', borderRadius: '16px', boxShadow: '0 6px 16px rgba(0,0,0,0.25)', width: '500px', textAlign: 'center', background: '#fff' }}>
+        <button onClick={() => onClose && onClose()} style={{ float: 'right', background: 'transparent', border: 'none', fontSize: '20px', cursor: 'pointer' }}>✕</button>
+        <h2 className="new-font text-2xl" style={{ color: '#1A4CA6', fontWeight: 'bold', marginBottom: '10px' }}>
+          Rate This Product
+        </h2>
+        <p className="new-font" style={{ color: '#555', marginBottom: '20px' }}>
+          Your rating helps other customers understand the product better.
+        </p>
+
+        <section style={{ marginBottom: '20px' }}>
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button
               key={star}
-              onClick={() => {setStars(star);}}
+              onClick={() => setStars(star)}
               style={{
-                color: stars >= star ? 'gold' : 'gray',
-                fontSize: '24px',
+                color: stars >= star ? '#FFD700' : '#B0BEC5',
+                fontSize: '32px',
                 cursor: 'pointer',
+                background: 'none',
+                border: 'none',
+                transition: 'transform 0.2s ease',
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.3)')}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
             >
               ★
             </button>
-            
           ))}
-          
-          </section>
-          <textarea placeholder=' Provide your Review Here !...' style={{height:'100px',display:'block',width:'400px',margin:'auto',borderRadius:'16px',border:'1.5px solid black'}} onChange={(e)=>{setReview(e.target.value)}}></textarea>
+        </section>
 
-          <button onClick={()=>{handleReview( )}}>Submit</button>
+        <textarea
+          placeholder="Provide your review here..."
+          style={{
+            height: '100px',
+            width: '100%',
+            borderRadius: '12px',
+            border: '1.5px solid #1A4CA6',
+            padding: '10px',
+            fontSize: '1rem',
+            marginBottom: '20px',
+            outline: 'none',
+            transition: 'box-shadow 0.2s ease',
+          }}
+          onFocus={(e) => (e.target.style.boxShadow = '0 0 8px #1A4CA6')}
+          onBlur={(e) => (e.target.style.boxShadow = 'none')}
+          onChange={(e) => setReview(e.target.value)}
+          value={review}
+        ></textarea>
+
+        <button
+          onClick={handleReview}
+          style={{
+            background: '#1A4CA6',
+            color: '#fff',
+            padding: '12px 24px',
+            borderRadius: '8px',
+            border: 'none',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            fontSize: '1rem',
+            transition: 'background 0.3s ease, transform 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#0D47A1';
+            e.currentTarget.style.transform = 'scale(1.05)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = '#1A4CA6';
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+        >
+          Submit Review
+        </button>
       </div>
-      </div>
-      </>
-    );
-}
+    </div>
+  );
+};
 
-export default Starrate
-
+export default Starrate;

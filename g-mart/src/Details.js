@@ -123,15 +123,17 @@ import addToCart from './addToCart';
 import Reviews from './Reviews';
 import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import axios from 'axios';
+import Starrate from "./Starrate.js";
 
 const Details = () => {
     const {product_Id} = useParams();
     const [data, setData] = useState(null);
-    const [graphData,setGraphData] = useState([])
+    const [graphData,setGraphData] = useState([]);
+    const [isReview,setIsreview] = useState(false);
     const navigate = useNavigate();
   const gps = localStorage.getItem('location');
     const handlePassing= (product_Id) =>{
-      navigate(`/rate-page/${product_Id}`);
+      setIsreview(true)
     }
   
     const user = localStorage.getItem('user');
@@ -139,6 +141,8 @@ const Details = () => {
     // Function to render stars
     const renderStars = (stars,count) => {
       const avg = Math.floor(stars /count);
+      console.log("Average Star Review : ",avg);
+      
       const maxStars = 5;
       if(avg > 0){
         const filledStars = Array(avg).fill(<AiFillStar className="text-yellow-500" style={{display:'inline'}}/>);
@@ -331,6 +335,9 @@ const Details = () => {
               <button className='text-white new-font rounded-2xl mt-3 ml-3 ' style={{backgroundColor:'#1A4CA6',width:'260px',display:'flex',alignContent:'center',padding:'8px 12px',margin:'20px auto',justifyContent:'center'}} onClick={(e)=>{e.preventDefault();handlePayment()}}>Pay with {data.price}</button>
           </div>
             <Reviews product_Id={product_Id} />
+            {isReview && (
+              <Starrate product_id={product_Id} onClose={() => setIsreview(false)} />
+            )}
         </div>
       ) : (
         <p>Loading...</p>

@@ -10,6 +10,7 @@ import {
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { redirect, useNavigate } from "react-router-dom";
+import { useNaturalSearch } from "./hooks/useNaturalSearch";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -17,6 +18,7 @@ const Navbar = () => {
   const [searchterm, setSearchterm] = useState("");
   const [gps, setGps] = useState("Fetching..");
   const navigate = useNavigate();
+  const { performSearch } = useNaturalSearch();
 
   // function to convert co-ordinates into cities
   const fetchNearestCity = async (latitude, longitude) => {
@@ -84,7 +86,14 @@ const Navbar = () => {
 
   const handleRedirect = () => {
     if (searchterm.trim()) {
-      navigate(`/search/${searchterm}`);
+      // Use intelligent natural language search
+      performSearch(searchterm).then(() => {
+        navigate(`/search/${searchterm}`);
+      }).catch(err => {
+        console.error('Search error:', err);
+        // Fallback to traditional search if intelligent search fails
+        navigate(`/search/${searchterm}`);
+      });
     }
   };
 

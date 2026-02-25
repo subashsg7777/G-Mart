@@ -1,0 +1,430 @@
+.smart-filter-container {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #1A4CA6;
+  padding-bottom: 15px;
+}
+
+.filter-title {
+  font-size: 1.5rem;
+  color: #1A4CA6;
+  margin: 0;
+  font-weight: 600;
+}
+
+.clear-btn {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.clear-btn:hover {
+  background-color: #ff5252;
+}
+
+.filter-section {
+  margin-bottom: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: white;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  cursor: pointer;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.section-header:hover {
+  background-color: #eaeaea;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.toggle-icon {
+  color: #666;
+  font-size: 0.8rem;
+  transition: transform 0.2s ease;
+}
+
+.section-content {
+  padding: 15px;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
+
+/* Search Input */
+.search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #1A4CA6;
+  box-shadow: 0 0 5px rgba(26, 76, 166, 0.2);
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.checkbox-label input {
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #1A4CA6;
+}
+
+.checkbox-label:hover {
+  color: #1A4CA6;
+}
+
+.checkbox-label input:checked + span {
+  color: #1A4CA6;
+  font-weight: 500;
+}
+
+.more-text {
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+/* Color Grid */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.color-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  transition: all 0.2s ease;
+}
+
+.color-option:hover {
+  border-color: #1A4CA6;
+  background-color: #f0f4ff;
+}
+
+.color-option input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #1A4CA6;
+}
+
+.color-label {
+  font-size: 0.85rem;
+  text-align: center;
+  color: #333;
+}
+
+.color-option input:checked + .color-label {
+  color: #1A4CA6;
+  font-weight: 600;
+}
+
+/* Price Inputs */
+.price-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.price-input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-input-group label {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.price-input {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.price-input:focus {
+  outline: none;
+  border-color: #1A4CA6;
+}
+
+.price-range-display {
+  background-color: #e7f0ff;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  color: #1A4CA6;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Rating Group */
+.rating-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Radio Labels */
+.radio-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.radio-label input {
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #1A4CA6;
+}
+
+.radio-label:hover {
+  color: #1A4CA6;
+}
+
+.sort-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Filter Actions */
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 15px;
+}
+
+.apply-btn {
+  flex: 1;
+  background-color: #1A4CA6;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.apply-btn:hover {
+  background-color: #143a7a;
+}
+
+.error {
+  color: #ff6b6b;
+  padding: 10px;
+  background-color: #ffe0e0;
+  border-radius: 5px;
+}
+
+/* Compact / landscape layout */
+.smart-filter-compact {
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.compact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.compact-item {
+  display: flex;
+  align-items: center;
+}
+
+.compact-search {
+  flex: 1 1 260px;
+}
+
+.compact-select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  background: white;
+  min-width: 160px;
+}
+
+.compact-select:focus {
+  outline: none;
+  border-color: #1A4CA6;
+  box-shadow: 0 0 5px rgba(26, 76, 166, 0.2);
+}
+
+.compact-price {
+  gap: 6px;
+}
+
+.compact-number {
+  width: 120px;
+  padding: 10px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.95rem;
+}
+
+.compact-number:focus {
+  outline: none;
+  border-color: #1A4CA6;
+}
+
+.compact-sep {
+  color: #666;
+  font-weight: 600;
+}
+
+.compact-actions {
+  gap: 8px;
+}
+
+.smart-filter-compact .apply-btn {
+  padding: 10px 14px;
+}
+
+.smart-filter-compact .clear-btn {
+  background-color: #6c757d;
+  padding: 10px 14px;
+}
+
+.smart-filter-compact .clear-btn:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .smart-filter-container {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  .filter-title {
+    font-size: 1.2rem;
+  }
+
+  .section-header h3 {
+    font-size: 0.95rem;
+  }
+
+  .price-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .color-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+
+  .filter-actions {
+    flex-direction: column;
+  }
+
+  .apply-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .smart-filter-container {
+    padding: 10px;
+  }
+
+  .filter-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .clear-btn {
+    width: 100%;
+  }
+
+  .color-grid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  }
+}

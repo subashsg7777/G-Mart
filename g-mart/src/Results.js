@@ -5,24 +5,29 @@ import { faCartShopping ,faLocationArrow, faUser,faCirclePlus,faStar} from "@for
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaStar } from 'react-icons/fa';
 import {AiFillStar,AiOutlineStar} from 'react-icons/ai';
+import { useNaturalSearch } from './hooks/useNaturalSearch';
+import SmartSearchFilter from './SmartSearchFilter';
 
 const Results = () => {
 
   const navigate = useNavigate();
-  // function to send product id to rating page 
+  const { performSearch } = useNaturalSearch();
+  const [searchResults, setSearchResults] = useState([]);
+  const [parsed, setParsed] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [appliedFilters, setAppliedFilters] = useState(null);
+  const [showFilters, setShowFilters] = useState(true); // Show filters by default on desktop
+  const { searchterm } = useParams();
+  const stars = 3;
 
-  const handlePassing= (product_Id) =>{
+  const handlePassing = (product_Id) => {
     navigate(`/rate-page/${product_Id}`);
   }
 
-  const handleDetails = (product_Id) =>{
+  const handleDetails = (product_Id) => {
     navigate(`/details/${product_Id}`);
   }
 
-    // necessary use states 
-    const [searchResults,setSearchResults] =useState([]);
-    const {searchterm} = useParams();
-    const stars = 3;
     // function to handle add cart event to database 
     const addtoCart = async (product)=>{
       const userdata = localStorage.getItem('token')
@@ -71,43 +76,179 @@ const renderStars = (stars,count) => {
   return [...emptyStars];
   }
 };
-     
 
-    useEffect(()=>{
- 
-        // funnction to handle the search eevents 
-    const handleSearch = async (e)=>{
+// Handle filters apply
+const handleFiltersApply = async (filters) => {
+  setAppliedFilters(filters);
+  setLoading(true);
+  try {
+    const response = await fetch('http://localhost:5000/api/filters/products', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(filters),
+    });
 
-        // creating the fetch request 
-        try{
-          const response = await fetch(`http://localhost:5000/api/product/search?name=${searchterm}`);
-        const data = await response.json();
-        const resultsArray = Array.isArray(data) ? data : [data];
-        // checking if the data is sucessfully searched or not 
-        if(response.ok){
-          console.log('Search Sucessfull !..');
-          console.log(resultsArray);
-          setSearchResults(resultsArray);
-        }
-  
-        else{
-          alert('No Items Found')
-          setSearchResults(resultsArray); 
-          console.log(searchResults.name)
-        }
-        }
-  
-        catch(error){
-          console.log('Error while Search Fetch : '+error);
-        }
+    const data = await response.json();
+
+    if (data.success) {
+      console.log('✓ Filter search successful');
+      setSearchResults(data.products || []);
+      setParsed(null); // Clear parsed info when using filters
+    } else {
+      console.log('Filter search failed');
+      setSearchResults([]);
+    }
+  } catch (error) {
+    console.error('Filter search error:', error);
+    setSearchResults([]);
+  } finally {
+    setLoading(false);
+  }
+};
+
+// Handle clear filters
+const handleFiltersClear = async () => {
+  setAppliedFilters(null);
+  // Search again with original searchterm
+  if (searchterm) {
+    handleSearch(searchterm);
+  }
+};
+
+// Original search function
+const handleSearch = async (term) => {
+  setLoading(true);
+  try {
+    // Try intelligent natural language search first
+    const response = await fetch('http://localhost:5000/api/search/natural', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ searchText: term }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      console.log('✓ Intelligent search successful');
+      console.log('Parsed:', data.parsed);
+      setSearchResults(data.products || []);
+      setParsed(data.parsed);
+      setAppliedFilters(null);
+    } else {
+      throw new Error('Intelligent search failed');
+    }
+  } catch (error) {
+    console.log('Intelligent search failed, using fallback:', error);
+    // Fallback to traditional search
+    try {
+      const response = await fetch(`http://localhost:5000/api/product/search?name=${term}`);
+      const data = await response.json();
+      const resultsArray = Array.isArray(data) ? data : [data];
+      if (response.ok) {
+        console.log('✓ Fallback search successful');
+        setSearchResults(resultsArray);
+      } else {
+        setSearchResults([]);
       }
+    } catch (fallbackError) {
+      console.error('Both searches failed:', fallbackError);
+      setSearchResults([]);
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
-      handleSearch();
-    },[searchterm])
+    useEffect(() => {
+      if (searchterm) {
+        handleSearch(searchterm);
+      }
+    }, [searchterm]);
   return (
     <>
-    <div>
-      <h1 className='new-font pt-32 font-bold text-2xl'>Search Results for "{searchterm}"  :</h1>
+      <div>
+        <h1 className='new-font pt-32 font-bold text-2xl'>Search Results for "{searchterm}":</h1>
+
+        {/* Filter Toggle */}
+        <div style={{ marginTop: '16px', marginBottom: '12px' }}>
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            style={{
+              backgroundColor: '#1A4CA6',
+              color: 'white',
+              border: 'none',
+              padding: '10px 16px',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontWeight: '600'
+            }}
+          >
+            {showFilters ? 'Hide Filters' : 'Show Filters'}
+          </button>
+        </div>
+
+        {/* Smart Search Filters */}
+        {showFilters && (
+          <div style={{ marginTop: '12px' }}>
+            <SmartSearchFilter
+              onFiltersApply={handleFiltersApply}
+              onFiltersClear={handleFiltersClear}
+              compact={true}
+            />
+          </div>
+        )}
+
+        {/* Show applied filters info */}
+        {appliedFilters && (
+          <div style={{
+            backgroundColor: '#fff7e6',
+            border: '1px solid #1A4CA6',
+            padding: '12px',
+            marginTop: '12px',
+            borderRadius: '8px',
+            marginBottom: '16px'
+          }}>
+            <p style={{ margin: '4px 0', fontSize: '14px', color: '#333' }}>
+              <strong>🧰 Filters Applied:</strong>
+              {' '}Categories: <span style={{ color: '#1A4CA6', fontWeight: 'bold' }}>{appliedFilters.categories?.length ? appliedFilters.categories.join(', ') : 'All'}</span>
+              {' | '}Brands: <span style={{ color: '#1A4CA6', fontWeight: 'bold' }}>{appliedFilters.brands?.length ? appliedFilters.brands.join(', ') : 'All'}</span>
+              {' | '}Colors: <span style={{ color: '#1A4CA6', fontWeight: 'bold' }}>{appliedFilters.colors?.length ? appliedFilters.colors.join(', ') : 'All'}</span>
+              {' | '}Price: ₹{(appliedFilters.minPrice ?? 0).toLocaleString()}-₹{(appliedFilters.maxPrice ?? 0).toLocaleString()}
+              {' | '}Rating: <span style={{ color: '#1A4CA6', fontWeight: 'bold' }}>{appliedFilters.minRating ? `${appliedFilters.minRating}+` : 'All'}</span>
+              {' | '}Sort: <span style={{ color: '#1A4CA6', fontWeight: 'bold' }}>{appliedFilters.sortBy}</span>
+            </p>
+          </div>
+        )}
+        
+        {/* Display parsed search info */}
+        {parsed && (
+          <div style={{
+            backgroundColor: '#f0f4ff',
+            border: '1px solid #1A4CA6',
+            padding: '12px',
+            marginTop: '16px',
+            borderRadius: '8px',
+            marginBottom: '16px'
+          }}>
+            <p style={{ margin: '4px 0', fontSize: '14px', color: '#333' }}>
+              <strong>🔍 Smart Search:</strong> Category: <span style={{ color: '#1A4CA6', fontWeight: 'bold' }}>{parsed.query}</span>
+              {' | '} Budget: ₹{parsed.budgetMin.toLocaleString()}-₹{parsed.budgetMax.toLocaleString()}
+              {' | '} Sorted by: <span style={{ color: '#1A4CA6', fontWeight: 'bold' }}>{parsed.sortBy}</span>
+            </p>
+          </div>
+        )}
+
+        {/* Loading state */}
+        {loading && (
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <p>Searching...</p>
+          </div>
+        )}
+
         <div className="search-results pt-4">
           {searchResults.length > 0 ? (
             searchResults.map(product => (
